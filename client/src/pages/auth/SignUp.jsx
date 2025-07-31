@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import NavBar from "../../components/layout/NavBar";
+import NavBar from "../../components/layout/navigation/NavBar";
 import axios from "axios";
 import Button from "../../components/custom/MyButton";
 import BasicForm from "../../components/forms/BasicForm";
@@ -133,7 +133,6 @@ export default function Register() {
   return (
     <>
       <title>Sign-Up</title>
-      <NavBar />
       <BasicForm customStyleWrapp={wrapperCustomStyle}>
         <h1 className="text-4xl w-2/3 text-center mb-10">Sign-up</h1>
         {registerError ? (

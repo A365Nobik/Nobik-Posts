@@ -1,11 +1,9 @@
-import NavBar from "../../components/layout/NavBar";
 import BasicForm from "../../components/forms/BasicForm";
-import InputWrapper from "../components/InputWrapper";
-import { MdEmail } from "react-icons/md";
 import { useState, useEffect } from "react";
 import Button from "../../components/custom/MyButton";
 import axios from "axios";
 import MyInput from "../../components/custom/MyInput";
+import ModalPassResetVerify from "../../components/modal/PassResetVerify";
 
 export default function PasswordResetSend() {
   const [email, setEmail] = useState(null);
@@ -14,7 +12,10 @@ export default function PasswordResetSend() {
   const [reqError, setReqError] = useState("");
   const [formValid, setFormValid] = useState(false);
   const [sending, setSending] = useState(false);
-  const apiUrl = import.meta.env.API_URL;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalScale, setModalScale] = useState(0);
+
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const emailHandler = (event) => {
     setEmail(event.target.value);
@@ -54,8 +55,11 @@ export default function PasswordResetSend() {
       const request = await axios.post(`${apiUrl}/pass-reset-send`, {
         email: email,
       });
-      localStorage.setItem("passResetUser", JSON.stringify(request.data[0]));
-      location.href = "/verify-reset";
+      localStorage.setItem("passResetUser", JSON.stringify(request.data));
+      setIsModalOpen(true);
+      setTimeout(() => {
+        setModalScale(100);
+      }, 350);
     } catch (error) {
       setFormValid(true);
       setSending(false);
@@ -75,9 +79,9 @@ export default function PasswordResetSend() {
   return (
     <>
       <title>Password Reset</title>
-      <NavBar />
+
       <BasicForm title={"Password Reset"} customStyleWrapp={wrapperCustomStyle}>
-        <h1 className="text-3xl w-2/3 text-center ">
+        <h1 className="text-3xl  text-center ">
           To reset your password please enter email
         </h1>
         {reqError ? (
@@ -97,6 +101,11 @@ export default function PasswordResetSend() {
         />
         <Button {...btnProps}>{sending ? "" : "Reset password"}</Button>
       </BasicForm>
+      {isModalOpen ? (
+        <ModalPassResetVerify scale={modalScale} setScale={setModalScale} />
+      ) : (
+        ""
+      )}
     </>
   );
 }

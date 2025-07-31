@@ -1,5 +1,6 @@
 export default function MyInput({
   label,
+  autoComplete,
   handler,
   blur,
   type,
@@ -16,21 +17,16 @@ export default function MyInput({
         </span>
         <input
           required={true}
-          autoComplete={label.toLowerCase()}
+          autoComplete={autoComplete}
+          type={type}
+          name={label.split(" ").join("").toLowerCase()}
+          id={label.toLowerCase()}
           onChange={handler}
           onBlur={blur}
           className="outline-0 font-medium text-[26px] bg-[var(--bg-primary)] rounded-xl w-full overflow-hidden px-2 border-2 border-[var(--border-color)] transition-all focus:border-blue-600"
-          type={type}
-          name={label.toLowerCase()}
-          id={label.toLowerCase()}
-          placeholder={label}
         />
       </div>
-      {dirty && error ? (
-        <div className="text-red-500">{error}</div>
-      ) : (
-        ""
-      )}
+      {dirty && error ? <div className="text-red-500">{error}</div> : ""}
     </>
   );
 }

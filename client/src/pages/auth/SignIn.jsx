@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import NavBar from "../../components/layout/NavBar";
+import NavBar from "../../components/layout/navigation/NavBar";
 import Button from "../../components/custom/MyButton";
 import MyInput from "../../components/custom/MyInput";
 import BasicForm from "../../components/forms/BasicForm";
@@ -99,7 +99,6 @@ export default function Login() {
   return (
     <>
       <title>Sign-In</title>
-      <NavBar />
       <BasicForm customStyleWrapp={wrapperCustomStyle}>
         <h1 className="text-4xl w-2/3 text-center mb-10">Sign-In</h1>
         {loginError ? (

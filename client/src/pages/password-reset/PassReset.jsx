@@ -5,16 +5,21 @@ import MyInput from "../../components/custom/MyInput";
 import { useState, useEffect } from "react";
 
 export default function PassReset() {
-  const [password, setPassword] = useState(null);
+  const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(
     "Password should to be filled"
   );
   const [passwordDirty, setPasswordDirty] = useState(false);
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [passwordConfirmError, setPasswordConfirmError] = useState(
+    "Password should to be filled"
+  );
+  const [passwordConfirmDirty, setPasswordConfirmDirty] = useState(false);
   const [formValid, setFormValid] = useState(false);
   const [changing, setChanging] = useState(false);
   const [error, setError] = useState("");
   const user = JSON.parse(localStorage.getItem("primaryUserPassoword"));
-  const apiUrl = import.meta.env.API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const passwordHandler = (event) => {
     setPassword(event.target.value);
@@ -27,22 +32,52 @@ export default function PassReset() {
     }
   };
 
+  const passwordConfirmHandler = (event) => {
+    setPasswordConfirm(event.target.value);
+    if (event.target.value.length < 6) {
+      setPasswordConfirmError("Password should to have min 6 symbols");
+    } else if (!event.target.value) {
+      setPasswordConfirmError("Password should to be filled");
+    } else {
+      setPasswordConfirmError("");
+    }
+    if (event.target.value !== password) {
+      setError("Passwords doesn't match ");
+    } else {
+      setError("");
+    }
+  };
+
   const blurHandler = (event) => {
     switch (event.target.name) {
-      case "password": {
+      case "newpassword": {
         setPasswordDirty(true);
+        break;
+      }
+      case "confirmpassword": {
+        setPasswordConfirmDirty(true);
         break;
       }
     }
   };
-
+  
   useEffect(() => {
-    if (passwordError) {
+    if (
+      password !== passwordConfirm &&
+      password.length !== passwordConfirm.length
+    ) {
       setFormValid(false);
     } else {
       setFormValid(true);
     }
-  }, [passwordError]);
+  }, [password, passwordConfirm]);
+  useEffect(() => {
+    if (passwordError || passwordConfirmError) {
+      setFormValid(false);
+    } else {
+      setFormValid(true);
+    }
+  }, [passwordError, passwordConfirmError]);
 
   const updatePassword = async (event) => {
     event.preventDefault();
@@ -55,7 +90,6 @@ export default function PassReset() {
       });
       console.log(request.data[0]);
       localStorage.removeItem("primaryUserPassoword");
-      localStorage.setItem("user", JSON.stringify(request.data[0]));
       location.href = "/sign-in";
     } catch (error) {
       setFormValid(true);
@@ -74,7 +108,7 @@ export default function PassReset() {
   return (
     <>
       <title>Password Reset</title>
-      <BasicForm title={"New Password"}>
+      <BasicForm title={"New Password"} customStyleWrapp={"px-4 py-2"}>
         <p className="text-2xl  text-center">Please enter the new password</p>
         {error ? (
           <div className="border-2 border-red-500 p-1 font-medium rounded-md">
@@ -84,12 +118,22 @@ export default function PassReset() {
           ""
         )}
         <MyInput
-          label={"Password"}
+          label={"New Password"}
+          autoComplete={"new-password"}
           handler={passwordHandler}
           blur={blurHandler}
           type={"password"}
           dirty={passwordDirty}
           error={passwordError}
+        />
+        <MyInput
+          label={"Confirm password"}
+          autoComplete={"new-password"}
+          handler={passwordConfirmHandler}
+          blur={blurHandler}
+          type={"password"}
+          dirty={passwordConfirmDirty}
+          error={passwordConfirmError}
         />
         <Button {...btnProps}>{changing ? "" : "Update"}</Button>
       </BasicForm>

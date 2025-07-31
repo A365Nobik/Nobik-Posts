@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
 import { CgDarkMode } from "react-icons/cg";
-import ThemeModal from "../modal/ThemeModal";
-
+import ThemeModal from "../../modal/ThemeModal";
 export default function NavBar() {
   const [userLogin, setUserLogin] = useState(false);
   const [inputACtive, setInputActive] = useState(false);

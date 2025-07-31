@@ -6,6 +6,7 @@ import { MailService } from "../services/mail-service.js";
 
 class UserClassService {
   primaryUsers = new Map();
+  primaryPassResetUsers = new Map();
 
   async register(login, email, password) {
     const primaryCandidate = this.primaryUsers.has(email);
@@ -82,21 +83,12 @@ class UserClassService {
       );
     }
     if (primaryUser.activateCode.toString() !== code.toString()) {
-      throw new Error(`The is not correct!`);
+      throw new Error(`The code is not correct!`);
     }
     const hashPassword = bcrypt.hash(primaryUser.password, 10);
     const activateUser = await db.query(
-      "INSERT INTO users VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
-      [
-        uuidv4(),
-        email,
-        primaryUser.login,
-        hashPassword,
-        primaryUser.createdAt,
-        true,
-        0,
-        0,
-      ]
+      "INSERT INTO users VALUES($1,$2,$3,$4,$5) RETURNING *",
+      [uuidv4(), email, primaryUser.login, hashPassword, primaryUser.createdAt]
     );
     console.log(activateUser);
     this.primaryUsers.delete(email);
@@ -112,47 +104,31 @@ class UserClassService {
       throw new Error(`User with ${email} email is not found!`);
     }
 
-    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const resetCode = Math.floor(100000 + Math.random() * 900000);
 
-    const hashedCode = bcrypt.hashSync(resetCode, 8);
-    const addCode = await db.query(
-      "UPDATE users set pass_reset_code=$1 where email=$2 RETURNING *",
-      [hashedCode, email]
-    );
-    MailService.sendPassResetCode(
+    this.primaryPassResetUsers.set(email, {
+      resetCode,
       email,
-      `${process.env.CLIENT_URL}/verify-reset?code=${resetCode}`,
-      resetCode
-    );
-    return addCode.rows.map(
-      ({ password, activation_code, pass_reset_code, ...user }) => user
-    );
+    });
+    MailService.sendPassResetCode(email, null, resetCode);
+    return { email };
   }
 
-  async passVerifyReset(id, code) {
-    const candidate = await db.query("SELECT * FROM users WHERE id=$1", [id]);
+  async passVerifyReset(email, code) {
+    const user = this.primaryPassResetUsers.get(email);
+    const candidate = await db.query("SELECT * FROM users WHERE email=$1", [
+      email,
+    ]);
 
     if (!candidate) {
       throw new Error(`User is not found!`);
     }
 
-    const unHashedCode = bcrypt.compareSync(
-      code,
-      candidate.rows[0].pass_reset_code
-    );
-
-    if (!unHashedCode) {
-      throw new Error("Reset code is not correct");
+    if (user.resetCode.toString() !== code.toString()) {
+      throw new Error("Code is not correct!");
     }
-
-    const verifiedPass = await db.query(
-      "UPDATE users SET pass_reset_code=0 where id=$1 RETURNING *",
-      [id]
-    );
-
-    return verifiedPass.rows.map(
-      ({ password, activation_code, pass_reset_code, ...user }) => user
-    );
+    this.primaryPassResetUsers.delete(email);
+    return candidate.rows.map(({ password, ...user }) => user);
   }
 
   async updatePass(id, newPass) {

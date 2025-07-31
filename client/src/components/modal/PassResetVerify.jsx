@@ -4,16 +4,17 @@ import CodeForm from "../../components/forms/CodeForm";
 import AfterForm from "../../components/forms/AfterForm";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
+import { createPortal } from "react-dom";
 
-export default function PassResetCheck() {
+export default function ModalPassResetVerify({scale ,setScale}) {
   const passResetUser = JSON.parse(localStorage.getItem("passResetUser"));
   const [codeError, setCodeError] = useState("");
   const [userCode, setUserCode] = useState("");
   const [formValid, setFormValid] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [searchParams] = useSearchParams("");
-  const apiUrl = import.meta.env.API_URL;
-
+  const apiUrl = import.meta.env.VITE_API_URL;
+console.log(passResetUser.email);
   const handleVerify = async (event) => {
     event.preventDefault();
     if (!passResetUser) {
@@ -22,13 +23,10 @@ export default function PassResetCheck() {
     setFormValid(false);
     setVerifying(true);
     try {
-      const request = await axios.post(
-        "http://localhost:4200/verify-pass-reset",
-        {
-          id: passResetUser.id,
-          code: userCode,
-        }
-      );
+      const request = await axios.post(`${apiUrl}/verify-pass-reset`, {
+        email: passResetUser.email,
+        code: userCode,
+      });
       localStorage.removeItem("passResetUser");
       localStorage.setItem(
         "primaryUserPassoword",
@@ -63,6 +61,7 @@ export default function PassResetCheck() {
     setCodeError: setCodeError,
     searchParams: searchParams,
     setFormValid: setFormValid,
+    customStyleMain: `w-max h-max`,
   };
 
   const btnProps = {
@@ -71,18 +70,22 @@ export default function PassResetCheck() {
     doing: verifying,
   };
 
-  return (
+  return createPortal(
     <>
-      <title>Password Reset</title>
-      <CodeForm {...formProps}>
-        <Button {...btnProps}>{verifying ? "" : "Verify Reset"}</Button>
-        <AfterForm
-          question={"Don't want to reset?"}
-          hyperLink={"Get back to sign-in"}
-          handleClick={stopResetPass}
-          href={"/sign-in"}
-        />
-      </CodeForm>
-    </>
+      <div
+        className={`inset-0 fixed flex justify-center items-center bg-black/80 transition-transform duration-400 scale-${scale}`}
+      >
+        <CodeForm {...formProps}>
+          <Button {...btnProps}>{verifying ? "" : "Verify Reset"}</Button>
+          <AfterForm
+            question={"Don't want to reset?"}
+            hyperLink={"Get back to sign-in"}
+            handleClick={stopResetPass}
+            href={"/sign-in"}
+          />
+        </CodeForm>
+      </div>
+    </>,
+    document.body
   );
 }

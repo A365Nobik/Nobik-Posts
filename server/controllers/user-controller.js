@@ -88,8 +88,8 @@ class UserClassController {
 
   async passVerifyReset(req, res) {
     try {
-      const { id, code } = req.body;
-      const userData = await UserService.passVerifyReset(id, code);
+      const { email, code } = req.body;
+      const userData = await UserService.passVerifyReset(email, code);
       res.status(200).json(userData);
     } catch (error) {
       console.log(colors.bgRed("Verify Reset Error:", error));

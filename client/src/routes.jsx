@@ -1,11 +1,11 @@
 import { Route, Routes, useNavigate } from "react-router";
 import Home from "./pages/Home";
-import Register from "./pages/SignUp";
-import Login from "./pages/SignIn";
+import Register from "./pages/auth/SignUp";
+import Login from "./pages/auth/SignIn";
 import NotFound from "./pages/NotFound";
-import PasswordResetSend from "./pages/PassResetSend";
-import PassResetCheck from "./pages/PassResetCheck";
-import PassReset from "./pages/PassReset";
+import PasswordResetSend from "./pages/password-reset/PassResetSend";
+import PassResetCheck from "./pages/password-reset/PassResetCheck";
+import PassReset from "./pages/password-reset/PassReset";
 import { useEffect } from "react";
 
 export default function Mainroutes() {
@@ -28,7 +28,7 @@ export default function Mainroutes() {
   return (
     <>
       <Routes>
-        { !passResetUser ? (
+        {!passResetUser ? (
           <>
             <Route path="/" element={<Home />} />
             <Route path="/sign-in" element={<Login />} />

@@ -1,10 +1,9 @@
 import axios from "axios";
-import Button from "../components/MyButton";
-import CodeForm from "../components/CodeForm";
-import AfterForm from "../components/AfterForm";
+import Button from "../../components/custom/MyButton";
+import CodeForm from "../../components/forms/CodeForm";
+import AfterForm from "../../components/forms/AfterForm";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
-
 
 export default function PassResetCheck() {
   const passResetUser = JSON.parse(localStorage.getItem("passResetUser"));
@@ -13,6 +12,7 @@ export default function PassResetCheck() {
   const [formValid, setFormValid] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [searchParams] = useSearchParams("");
+  const apiUrl = import.meta.env.API_URL;
 
   const handleVerify = async (event) => {
     event.preventDefault();
@@ -45,7 +45,7 @@ export default function PassResetCheck() {
   const stopResetPass = async () => {
     localStorage.removeItem("passResetUser");
     try {
-      const request = await axios.put(`http://localhost:4200/pass-reset-stop`, {
+      const request = await axios.put(`${apiUrl}/pass-reset-stop`, {
         id: passResetUser.id,
       });
       console.log(request);

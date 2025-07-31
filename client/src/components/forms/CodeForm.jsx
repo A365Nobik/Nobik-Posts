@@ -11,7 +11,7 @@ export default function CodeForm({
   setFormValid,
   setCodeError,
   endOfSession,
-  customStyleMain
+  customStyleMain,
 }) {
   const codeRefs = useRef([]);
   const [searchParams] = useSearchParams("");

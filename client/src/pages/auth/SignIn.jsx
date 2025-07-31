@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import NavBar from "../components/layout/NavBar";
-import Button from "../components/MyButton";
-import MyInput from "../components/MyInput";
-import BasicForm from "../components/BasicForm";
-import AfterForm from "../components/AfterForm";
+import NavBar from "../../components/layout/NavBar";
+import Button from "../../components/custom/MyButton";
+import MyInput from "../../components/custom/MyInput";
+import BasicForm from "../../components/forms/BasicForm";
+import AfterForm from "../../components/forms/AfterForm";
 import axios from "axios";
 
 export default function Login() {
@@ -18,6 +18,7 @@ export default function Login() {
   const [formValid, setFormValid] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [logining, setLogining] = useState(false);
+  const apiUrl = import.meta.env.API_URL;
 
   const emailHandler = (event) => {
     setEmail(event.target.value);
@@ -69,7 +70,7 @@ export default function Login() {
     setLogining(true);
     setFormValid(false);
     try {
-      const request = await axios.post("http://localhost:4200/login", {
+      const request = await axios.post(`${apiUrl}/login`, {
         email: email,
         password: password,
       });

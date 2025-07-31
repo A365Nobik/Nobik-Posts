@@ -1,11 +1,11 @@
-import NavBar from "../components/layout/NavBar";
-import BasicForm from "../components/BasicForm";
+import NavBar from "../../components/layout/NavBar";
+import BasicForm from "../../components/forms/BasicForm";
 import InputWrapper from "../components/InputWrapper";
 import { MdEmail } from "react-icons/md";
 import { useState, useEffect } from "react";
-import Button from "../components/MyButton";
+import Button from "../../components/custom/MyButton";
 import axios from "axios";
-import MyInput from "../components/MyInput";
+import MyInput from "../../components/custom/MyInput";
 
 export default function PasswordResetSend() {
   const [email, setEmail] = useState(null);
@@ -14,6 +14,7 @@ export default function PasswordResetSend() {
   const [reqError, setReqError] = useState("");
   const [formValid, setFormValid] = useState(false);
   const [sending, setSending] = useState(false);
+  const apiUrl = import.meta.env.API_URL;
 
   const emailHandler = (event) => {
     setEmail(event.target.value);
@@ -50,12 +51,9 @@ export default function PasswordResetSend() {
     setSending(true);
     event.preventDefault();
     try {
-      const request = await axios.post(
-        "http://localhost:4200/pass-reset-send",
-        {
-          email: email,
-        }
-      );
+      const request = await axios.post(`${apiUrl}/pass-reset-send`, {
+        email: email,
+      });
       localStorage.setItem("passResetUser", JSON.stringify(request.data[0]));
       location.href = "/verify-reset";
     } catch (error) {

@@ -1,4 +1,4 @@
-import db from "../db.js";
+import db from "../db/db.js";
 import cron from "node-cron";
 import { UserService } from "./user-service.js";
 

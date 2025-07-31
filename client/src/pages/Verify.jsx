@@ -1,7 +1,7 @@
 import axios from "axios";
-import Button from "../components/MyButton";
-import CodeForm from "../components/CodeForm";
-import AfterForm from "../components/AfterForm";
+import Button from "../components/custom/MyButton";
+import CodeForm from "../components/forms/CodeForm";
+import AfterForm from "../components/forms/AfterForm";
 import { useState, useEffect, useCallback } from "react";
 
 export default function Verify() {
@@ -94,7 +94,7 @@ export default function Verify() {
     } catch (error) {
       console.log(error);
     }
-  },[primaryUser,endOfSession]);
+  }, [primaryUser, endOfSession]);
 
   const formProps = {
     title: "Vetify Account",

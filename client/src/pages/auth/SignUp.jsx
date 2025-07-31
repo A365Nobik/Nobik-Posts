@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import NavBar from "../components/layout/NavBar";
+import NavBar from "../../components/layout/NavBar";
 import axios from "axios";
-import Button from "../components/MyButton";
-import BasicForm from "../components/BasicForm";
-import AfterForm from "../components/AfterForm";
-import MyInput from "../components/MyInput";
-import EmailVerify from "../components/modal/EmailVerifyModal";
+import Button from "../../components/custom/MyButton";
+import BasicForm from "../../components/forms/BasicForm";
+import AfterForm from "../../components/forms/AfterForm";
+import MyInput from "../../components/custom/MyInput";
+import EmailVerify from "../../components/modal/EmailVerifyModal";
 
 export default function Register() {
   const [login, setLogin] = useState(null);
@@ -25,6 +25,8 @@ export default function Register() {
   const [registerError, setRegisterError] = useState("");
   const [registering, setRegistering] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const apiUrl = import.meta.env.API_URL;
+
   const loginHandler = (event) => {
     setLogin(event.target.value);
     if (event.target.value.length > 0) {
@@ -96,7 +98,7 @@ export default function Register() {
     setFormValid(false);
     setRegistering(true);
     try {
-      const request = await axios.post("http://localhost:4200/register", {
+      const request = await axios.post(`${apiUrl}/register`, {
         login: login,
         email: email,
         password: password,
@@ -135,7 +137,7 @@ export default function Register() {
       <BasicForm customStyleWrapp={wrapperCustomStyle}>
         <h1 className="text-4xl w-2/3 text-center mb-10">Sign-up</h1>
         {registerError ? (
-<div className="flex justify-center items-center border-2 w-100 border-red-500 p-1  rounded-md text-center overflow-auto">
+          <div className="flex justify-center items-center border-2 w-100 border-red-500 p-1  rounded-md text-center overflow-auto">
             <p className="w-100">{registerError}</p>
           </div>
         ) : (

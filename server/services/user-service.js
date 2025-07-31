@@ -1,4 +1,4 @@
-import db from "../db.js";
+import db from "../db/db.js";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { MailService } from "../services/mail-service.js";
@@ -8,9 +8,9 @@ class UserClassService {
   primaryUsers = new Map();
 
   async register(login, email, password) {
-    const primaryCandidate = this.primaryUsers.has(email)
-    if(primaryCandidate){
-            throw new Error(
+    const primaryCandidate = this.primaryUsers.has(email);
+    if (primaryCandidate) {
+      throw new Error(
         `The user with the email address ${email} is registering now!`
       );
     }

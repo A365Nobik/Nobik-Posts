@@ -1,7 +1,7 @@
 import axios from "axios";
-import BasicForm from "../components/BasicForm";
-import Button from "../components/MyButton";
-import MyInput from "../components/MyInput";
+import BasicForm from "../../components/forms/BasicForm";
+import Button from "../../components/custom/MyButton";
+import MyInput from "../../components/custom/MyInput";
 import { useState, useEffect } from "react";
 
 export default function PassReset() {
@@ -14,6 +14,7 @@ export default function PassReset() {
   const [changing, setChanging] = useState(false);
   const [error, setError] = useState("");
   const user = JSON.parse(localStorage.getItem("primaryUserPassoword"));
+  const apiUrl = import.meta.env.API_URL;
 
   const passwordHandler = (event) => {
     setPassword(event.target.value);
@@ -48,7 +49,7 @@ export default function PassReset() {
     setChanging(true);
     setFormValid(false);
     try {
-      const request = await axios.post("http://localhost:4200/update-pass", {
+      const request = await axios.post(`${apiUrl}/update-pass`, {
         id: user.id,
         newPass: password,
       });

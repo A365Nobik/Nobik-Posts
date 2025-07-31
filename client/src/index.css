@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "tailwindcss";
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@theme {
+  --font-poppins: "Poppins", sans-serif;
+  --color-dark-primary: #1a1c1f;
+  --color-dark-secondary: #2a2d32;
+  --color-light-primary: #e0e5ec;
+  --color-light-secondary: #f0f6fc;
+}
+
+body.dark {
+  --bg-primary: #1a1c1f;
+  --bg-secondary: #2a2d32;
+  --text-primary: #f0f6fc;
+  /* --text-primary: #5eff00; */
+  --text-secondary: #ebecee;
+  --border-color: var(--text-primary);
+}
+body.light {
+  --bg-primary: #e0e5ec;
+  --bg-secondary: #f0f6fc;
+  --text-primary: #1a1c1f;
+  --text-secondary: #1f20224d;
+  --border-color: var(--text-primary);
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}

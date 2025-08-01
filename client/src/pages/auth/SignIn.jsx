@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import NavBar from "../../components/layout/navigation/NavBar";
-import Button from "../../components/custom/MyButton";
-import MyInput from "../../components/custom/MyInput";
+import {MyInput,MyButton,MyError} from "../../components/custom/";
 import BasicForm from "../../components/forms/BasicForm";
 import AfterForm from "../../components/forms/AfterForm";
 import axios from "axios";
-
+import { useUser } from "../../context/UserContext";
 export default function Login() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -18,8 +16,8 @@ export default function Login() {
   const [formValid, setFormValid] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [logining, setLogining] = useState(false);
-  const apiUrl = import.meta.env.API_URL;
-
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const {login} = useUser()
   const emailHandler = (event) => {
     setEmail(event.target.value);
     const re =
@@ -65,7 +63,7 @@ export default function Login() {
     }
   }, [emailError, passwordError]);
 
-  const loginUser = async (e) => {
+  const LoginUser = async (e) => {
     e.preventDefault();
     setLogining(true);
     setFormValid(false);
@@ -74,18 +72,24 @@ export default function Login() {
         email: email,
         password: password,
       });
-      console.log(request.data[0]);
+      login(request.data[0])
+      location.href='/'
     } catch (error) {
+      const errorData =  error?.response?.data;
       setLogining(false);
       setFormValid(true);
       console.log(error);
-      setLoginError(error.response.data);
+      if (!errorData) {
+        setLoginError("Sudden error! Please try again in a few minutes.");
+      } else {
+        setLoginError(error.response.data);
+      }
     }
   };
 
   const btnProps = {
     formValid: formValid,
-    handleClick: loginUser,
+    handleClick: LoginUser,
     doing: logining,
   };
 
@@ -101,25 +105,21 @@ export default function Login() {
       <title>Sign-In</title>
       <BasicForm customStyleWrapp={wrapperCustomStyle}>
         <h1 className="text-4xl w-2/3 text-center mb-10">Sign-In</h1>
-        {loginError ? (
-          <div className="flex justify-center items-center border-2 w-100 border-red-500 p-1  rounded-md text-center overflow-auto">
-            <p className="w-100">{loginError}</p>
-          </div>
-        ) : (
-          ""
-        )}
+        <MyError anyError={loginError} setAnyError={setLoginError}/>
         <MyInput
           label={"Email"}
-          handler={emailHandler}
-          blur={blurHandler}
+          onChange={emailHandler}
+          onBlur={blurHandler}
+          autoComplete={"emaiil"}
           type={"email"}
           dirty={emailDirty}
           error={emailError}
         />
         <MyInput
           label={"Password"}
-          handler={passwordHandler}
-          blur={blurHandler}
+          onChange={passwordHandler}
+          onBlur={blurHandler}
+          autoComplete={"current-password"}
           type={"password"}
           dirty={passwordDirty}
           error={passwordError}
@@ -131,7 +131,7 @@ export default function Login() {
             Forgot Password
           </a>
         </MyInput>
-        <Button {...btnProps}>{logining ? "" : "Login"}</Button>
+        <MyButton {...btnProps}>{logining ? "" : "Login"}</MyButton>
         <AfterForm {...afProps2} />
       </BasicForm>
     </>

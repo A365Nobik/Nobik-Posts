@@ -20,7 +20,7 @@ body.dark {
   --bg-secondary: #2a2d32;
   --text-primary: #f0f6fc;
   /* --text-primary: #5eff00; */
-  --text-secondary: #ebecee;
+  --text-secondary: #ebeceed7;
   --border-color: var(--text-primary);
 }
 body.light {

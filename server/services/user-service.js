@@ -53,8 +53,9 @@ class UserClassService {
     const unhashPass = bcrypt.compareSync(password, candidate.rows[0].password);
 
     if (!unhashPass) {
-      throw new Error(`Password is wrong!`);
+      throw new Error(`Password is not correct!`);
     }
+    return candidate.rows.map(({ password, ...user }) => user);
   }
 
   async getAllUsers() {
@@ -92,9 +93,7 @@ class UserClassService {
     );
     console.log(activateUser);
     this.primaryUsers.delete(email);
-    return activateUser.rows.map(
-      ({ password, activation_code, pass_reset_code, ...user }) => user
-    );
+    return activateUser.rows.map(({ password, ...user }) => user);
   }
   async sendPassResetCode(email) {
     const candidate = await db.query("SELECT * FROM users WHERE email=$1", [
@@ -137,9 +136,7 @@ class UserClassService {
       "UPDATE users SET password=$1 WHERE id=$2 RETURNING *",
       [hashPassword, id]
     );
-    return newUserPass.rows.map(
-      ({ password, activation_code, pass_reset_code, ...user }) => user
-    );
+    return newUserPass.rows.map(({ password, ...user }) => user);
   }
   async passResetStop(id) {
     const user = await db.query(

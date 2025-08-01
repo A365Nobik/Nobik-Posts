@@ -1,6 +1,6 @@
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-export default function Button({ formValid, handleClick, doing, children }) {
+export default function MyButton({ formValid, handleClick, doing, children }) {
   return (
     <button
     type="submit"

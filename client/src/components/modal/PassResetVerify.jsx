@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router";
 import { createPortal } from "react-dom";
 
-export default function ModalPassResetVerify({scale ,setScale}) {
+export default function ModalPassResetVerify({scale }) {
   const passResetUser = JSON.parse(localStorage.getItem("passResetUser"));
   const [codeError, setCodeError] = useState("");
   const [userCode, setUserCode] = useState("");
@@ -73,7 +73,7 @@ console.log(passResetUser.email);
   return createPortal(
     <>
       <div
-        className={`inset-0 fixed flex justify-center items-center bg-black/80 transition-transform duration-400 scale-${scale}`}
+        className={`inset-0 fixed flex justify-center items-center bg-black/80  duration-400 scale-${scale}`}
       >
         <CodeForm {...formProps}>
           <Button {...btnProps}>{verifying ? "" : "Verify Reset"}</Button>

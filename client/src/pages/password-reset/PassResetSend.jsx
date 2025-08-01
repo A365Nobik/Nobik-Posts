@@ -81,8 +81,8 @@ export default function PasswordResetSend() {
       <title>Password Reset</title>
 
       <BasicForm title={"Password Reset"} customStyleWrapp={wrapperCustomStyle}>
-        <h1 className="text-3xl  text-center ">
-          To reset your password please enter email
+        <h1 className="text-2xl  text-center ">
+          To reset your password please enter your email
         </h1>
         {reqError ? (
           <div className="border-2 border-red-500 p-1 font-medium rounded-md">
@@ -93,8 +93,8 @@ export default function PasswordResetSend() {
         )}
         <MyInput
           label={"Email"}
-          handler={emailHandler}
-          blur={blurHandler}
+          onChange={emailHandler}
+          onBlur={blurHandler}
           type={"email"}
           dirty={emailDirty}
           error={emailError}

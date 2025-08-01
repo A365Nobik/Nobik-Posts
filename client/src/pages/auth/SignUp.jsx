@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import NavBar from "../../components/layout/navigation/NavBar";
 import axios from "axios";
-import Button from "../../components/custom/MyButton";
 import BasicForm from "../../components/forms/BasicForm";
 import AfterForm from "../../components/forms/AfterForm";
-import MyInput from "../../components/custom/MyInput";
+import { MyInput, MyButton, MyError } from "../../components/custom/";
 import EmailVerify from "../../components/modal/EmailVerifyModal";
-
 export default function Register() {
   const [login, setLogin] = useState(null);
   const [email, setEmail] = useState(null);
@@ -25,7 +22,7 @@ export default function Register() {
   const [registerError, setRegisterError] = useState("");
   const [registering, setRegistering] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
-  const apiUrl = import.meta.env.API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const loginHandler = (event) => {
     setLogin(event.target.value);
@@ -62,7 +59,7 @@ export default function Register() {
 
   const blurHandler = (event) => {
     switch (event.target.name) {
-      case "login": {
+      case "username": {
         setLoginDirty(true);
         break;
       }
@@ -106,9 +103,10 @@ export default function Register() {
       console.log(request.data);
       localStorage.setItem("primaryUser", JSON.stringify(request.data));
       setEmailModal(true);
+      setModalScale(0);
       setTimeout(() => {
         setModalScale(100);
-      }, 350);
+      }, 400);
     } catch (error) {
       console.log(error);
       setRegisterError(error.response.data);
@@ -135,38 +133,33 @@ export default function Register() {
       <title>Sign-Up</title>
       <BasicForm customStyleWrapp={wrapperCustomStyle}>
         <h1 className="text-4xl w-2/3 text-center mb-10">Sign-up</h1>
-        {registerError ? (
-          <div className="flex justify-center items-center border-2 w-100 border-red-500 p-1  rounded-md text-center overflow-auto">
-            <p className="w-100">{registerError}</p>
-          </div>
-        ) : (
-          ""
-        )}
+        <MyError anyError={registerError} />
+
         <MyInput
           label={"Username"}
-          handler={loginHandler}
-          blur={blurHandler}
+          onChange={loginHandler}
+          onBlur={blurHandler}
           type={"text"}
           dirty={loginDirty}
           error={loginError}
         />
         <MyInput
           label={"Email"}
-          handler={emailHandler}
-          blur={blurHandler}
+          onChange={emailHandler}
+          onBlur={blurHandler}
           type={"email"}
           dirty={emailDirty}
           error={emailError}
         />
         <MyInput
           label={"Password"}
-          handler={passwordHandler}
-          blur={blurHandler}
+          onChange={passwordHandler}
+          onBlur={blurHandler}
           type={"password"}
           dirty={passwordDirty}
           error={passwordError}
         />
-        <Button {...btnProps}>{registering ? "" : "Register"}</Button>
+        <MyButton {...btnProps}>{registering ? "" : "Register"} </MyButton>
         <AfterForm {...afProps} />
       </BasicForm>
       {emailModal ? (

@@ -2,8 +2,9 @@ import axios from "axios";
 import Button from "../custom/MyButton.jsx";
 import CodeForm from "../forms/CodeForm.jsx";
 import AfterForm from "../forms/AfterForm.jsx";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useCallback } from "react";
 import { createPortal } from "react-dom";
+
 
 export default function EmailVerify({ scale, setScale }) {
   const [userCode, setUserCode] = useState("");
@@ -44,8 +45,7 @@ export default function EmailVerify({ scale, setScale }) {
       setCodeError("Session is over! Please register again");
       removeUser();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endOfSession]);
+  }, [endOfSession,removeUser]);
 
   const handleVerify = async (event) => {
     event.preventDefault();
@@ -71,18 +71,18 @@ export default function EmailVerify({ scale, setScale }) {
     }
   };
 
-  const removeUser = async () => {
+  const removeUser = useCallback(async () => {
     localStorage.removeItem("primaryUser");
     if (endOfSession) localStorage.removeItem("endOfSession");
     try {
       const request = await axios.delete(
-        `http://localhost:4200/delete/${primaryUser.id}`
+        `${apiUrl}/delete/${primaryUser.id}`
       );
       console.log(request);
     } catch (error) {
       console.log(error);
     }
-  };
+  },[apiUrl,endOfSession,primaryUser]);
 
   const formProps = {
     title: "Vetify Account",
@@ -112,7 +112,7 @@ export default function EmailVerify({ scale, setScale }) {
   return createPortal(
     <>
       <div
-        className={`inset-0 fixed flex justify-center items-center bg-black/80 transition-transform duration-400 scale-${scale}`}
+        className={`inset-0 fixed flex justify-center items-center bg-black/80  duration-400 scale-${scale}`}
       >
         <CodeForm {...formProps}>
           <Button {...btnProps}>{verifying ? "" : "Verify account"}</Button>

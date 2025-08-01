@@ -4,7 +4,7 @@ import { ThemeContext } from "../../context/ThemeContext";
 import { useContext, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-export default function ThemeModal() {
+export default function ThemeModal({scale}) {
   const { theme, setTheme } = useContext(ThemeContext);
 
   const chosedTheme = useRef([]);
@@ -51,7 +51,7 @@ export default function ThemeModal() {
   };
   return createPortal(
     <>
-      <ul className="fixed top-12.5 right-53.5  flex flex-col justify-center items-start bg-[var(--bg-primary)] w-35 p-1 border-2 rounded-md text-xl font-semibold gap-0.5">
+      <ul className={`theme-modal fixed top-12.5 right-53.5  flex flex-col justify-center items-start bg-[var(--bg-primary)] w-35 p-1 border-2 rounded-md text-xl font-semibold gap-0.5 duration-400 scale-${scale}`}>
         <li
           ref={(event) => (chosedTheme.current[1] = event)}
           className={liClasses}

@@ -1,12 +1,11 @@
 export default function MyInput({
   label,
   autoComplete,
-  handler,
-  blur,
   type,
   dirty,
   error,
   children,
+  ...props
 }) {
   return (
     <>
@@ -16,13 +15,12 @@ export default function MyInput({
           {children}
         </span>
         <input
+          {...props}
           required={true}
           autoComplete={autoComplete}
-          type={type}
           name={label.split(" ").join("").toLowerCase()}
+          type={type}
           id={label.toLowerCase()}
-          onChange={handler}
-          onBlur={blur}
           className="outline-0 font-medium text-[26px] bg-[var(--bg-primary)] rounded-xl w-full overflow-hidden px-2 border-2 border-[var(--border-color)] transition-all focus:border-blue-600"
         />
       </div>

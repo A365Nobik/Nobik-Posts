@@ -120,8 +120,8 @@ export default function PassReset() {
         <MyInput
           label={"New Password"}
           autoComplete={"new-password"}
-          handler={passwordHandler}
-          blur={blurHandler}
+          onChange={passwordHandler}
+          onBlur={blurHandler}
           type={"password"}
           dirty={passwordDirty}
           error={passwordError}
@@ -129,8 +129,8 @@ export default function PassReset() {
         <MyInput
           label={"Confirm password"}
           autoComplete={"new-password"}
-          handler={passwordConfirmHandler}
-          blur={blurHandler}
+          onChange={passwordConfirmHandler}
+          onBlur={blurHandler}
           type={"password"}
           dirty={passwordConfirmDirty}
           error={passwordConfirmError}

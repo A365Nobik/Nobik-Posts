@@ -23,7 +23,7 @@ export default function MainPosts() {
   }, [getPosts]);
 
   return (
-    <div className="h-screen w-200 fixed flex flex-col justify-center items-center gap-2.5">
+    <div className="h-screen w-200 flex flex-col gap-2 items-center">
       <CreatePost />
       {posts?.map((post, index) => {
         // console.table(post);

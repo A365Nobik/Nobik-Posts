@@ -5,17 +5,16 @@ import PostPictureModal from "../modal/PostPictureModal";
 import { useState, useEffect, useCallback } from "react";
 
 export default function Post({ post }) {
-  const [pictureInfo, setPictureInfo] = useState(null);
+  const [photoIndex, setPhotoIndex] = useState(null);
   const [pictureModal, setPictureModal] = useState(false);
   const [scale, setScale] = useState(100);
 
-  const handlePictureClick = (event,index) => {
-    console.log(index)
+  const handlePictureClick = (event, index) => {
+    setPhotoIndex(index);
     setPictureModal(true);
     setTimeout(() => {
       setScale(100);
     }, 10);
-    setPictureInfo(event.target);
   };
 
   const handlePictureModalClose = useCallback((event) => {
@@ -37,10 +36,12 @@ export default function Post({ post }) {
   return (
     <>
       {pictureModal ? (
-        <PostPictureModal postInfo={post} photoIndex={""} scale={scale} />
-      ) : (
-        ""
-      )}
+        <PostPictureModal
+          postInfo={post}
+          photoIndex={photoIndex}
+          scale={scale}
+        />
+      ) : null}
       <div className="bg-[var(--bg-secondary)] border-2 flex flex-col justify-center rounded-md p-1">
         <div className="flex justify-start items-center gap-1 m-1 w-max h-max cursor-pointer">
           <img
@@ -60,23 +61,24 @@ export default function Post({ post }) {
             </span>
           </div>
         </div>
-
-        <div className="m-1 flex justify-center items-center overflow-auto text-left text-xl font-semibold">
-          <p>{post?.content}</p>
-        </div>
-        <div className="grid grid-cols-3 justify-center items-center gap-0 p-0">
+        <div
+          className={`grid grid-cols-${post?.thumbnail.length} justify-center items-center gap-0 p-0`}
+        >
           {post?.thumbnail?.map((picture, index) => {
-            const photoIndex=index
+            const photoIndex = index;
             return (
               <div
                 key={index}
-                onClick={(event) => handlePictureClick(event,photoIndex)}
+                onClick={(event) => handlePictureClick(event, photoIndex)}
                 className="m-1 cursor-pointer picture justify-center items-center flex"
               >
                 <img className="object-cover" src={picture} alt={index} />
               </div>
             );
           })}
+        </div>
+        <div className="m-1 flex justify-center items-center overflow-auto text-left text-xl font-semibold">
+          <p>{post?.content}</p>
         </div>
       </div>
     </>

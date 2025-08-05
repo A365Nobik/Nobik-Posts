@@ -1,6 +1,7 @@
 import BasicForm from "./BasicForm";
 import { useRef, useEffect } from "react";
 import { useSearchParams } from "react-router";
+import { MyError } from "../custom";
 export default function CodeForm({
   title,
   codeError,
@@ -71,13 +72,7 @@ export default function CodeForm({
         <h1 className="text-2xl w-2/3 text-center ">
           Please enter the field with code that have send on {user?.email} email
         </h1>
-        {codeError ? (
-          <div className="border-2 border-red-500 p-1 font-medium rounded-md">
-            {codeError}
-          </div>
-        ) : (
-          ""
-        )}
+        <MyError anyError={codeError} setAnyError={setCodeError}/>
         <div className="flex justify-center items-center gap-1.5">
           {Array(6)
             .fill(0)

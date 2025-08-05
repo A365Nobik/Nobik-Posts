@@ -15,7 +15,6 @@ class UserClassService {
         `The user with the email address ${email} is registering now!`
       );
     }
-    const registerDate = new Date();
     const candidate = await db.query("SELECT * FROM users WHERE email = $1", [
       email,
     ]);
@@ -25,19 +24,21 @@ class UserClassService {
         `The user with the email address ${email} has already registered!`
       );
     }
-    const activateCode = Math.floor(100000 + Math.random() * 900000);
+    const activateCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const [hashCode, hashPassword] = await Promise.all([
+      bcrypt.hash(activateCode, 8),
+      bcrypt.hash(password, 10),
+    ]);
     this.primaryUsers.set(email, {
       login,
       email,
-      password,
-      activateCode,
-      createdAt: registerDate,
+      hashPassword,
+      hashCode,
     });
     MailService.sendActivationLink(email, null, activateCode);
     return {
       email,
       login,
-      createdAt: registerDate,
     };
   }
 
@@ -60,9 +61,7 @@ class UserClassService {
 
   async getAllUsers() {
     const users = await db.query(`SELECT * FROM users`);
-    const userWithoutPassword = users.rows.map(
-      ({ password, activation_code, pass_reset_code, ...user }) => user
-    );
+    const userWithoutPassword = users.rows.map(({ password, ...user }) => user);
     return userWithoutPassword;
   }
 
@@ -83,15 +82,14 @@ class UserClassService {
         `The user with the email address ${email} is not found!Please register again.`
       );
     }
-    if (primaryUser.activateCode.toString() !== code.toString()) {
+    const checkCode = bcrypt.compareSync(code, primaryUser.hashCode);
+    if (!checkCode) {
       throw new Error(`The code is not correct!`);
     }
-    const hashPassword = bcrypt.hash(primaryUser.password, 10);
     const activateUser = await db.query(
-      "INSERT INTO users VALUES($1,$2,$3,$4,$5) RETURNING *",
-      [uuidv4(), email, primaryUser.login, hashPassword, primaryUser.createdAt]
+      "INSERT INTO users(email,login,password) VALUES($1,$2,$3) RETURNING *",
+      [email, primaryUser.login, primaryUser.hashPassword]
     );
-    console.log(activateUser);
     this.primaryUsers.delete(email);
     return activateUser.rows.map(({ password, ...user }) => user);
   }

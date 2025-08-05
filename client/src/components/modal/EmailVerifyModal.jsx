@@ -1,10 +1,9 @@
 import axios from "axios";
-import Button from "../custom/MyButton.jsx";
+import { MyButton } from "../custom/";
 import CodeForm from "../forms/CodeForm.jsx";
 import AfterForm from "../forms/AfterForm.jsx";
-import { useState, useEffect,useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-
 
 export default function EmailVerify({ scale, setScale }) {
   const [userCode, setUserCode] = useState("");
@@ -40,13 +39,6 @@ export default function EmailVerify({ scale, setScale }) {
     }
   }, [userCode, codeError, endOfSession]);
 
-  useEffect(() => {
-    if (endOfSession) {
-      setCodeError("Session is over! Please register again");
-      removeUser();
-    }
-  }, [endOfSession,removeUser]);
-
   const handleVerify = async (event) => {
     event.preventDefault();
     if (!primaryUser) {
@@ -63,6 +55,7 @@ export default function EmailVerify({ scale, setScale }) {
       localStorage.removeItem("primaryUser");
       localStorage.setItem("user", JSON.stringify(request.data[0]));
       setScale(0);
+      location.href = "/";
     } catch (error) {
       setFormValid(true);
       setVerifying(false);
@@ -75,14 +68,12 @@ export default function EmailVerify({ scale, setScale }) {
     localStorage.removeItem("primaryUser");
     if (endOfSession) localStorage.removeItem("endOfSession");
     try {
-      const request = await axios.delete(
-        `${apiUrl}/delete/${primaryUser.id}`
-      );
+      const request = await axios.delete(`${apiUrl}/delete/${primaryUser.id}`);
       console.log(request);
     } catch (error) {
       console.log(error);
     }
-  },[apiUrl,endOfSession,primaryUser]);
+  }, [apiUrl, endOfSession, primaryUser]);
 
   const formProps = {
     title: "Vetify Account",
@@ -112,10 +103,10 @@ export default function EmailVerify({ scale, setScale }) {
   return createPortal(
     <>
       <div
-        className={`inset-0 fixed flex justify-center items-center bg-black/80  duration-400 scale-${scale}`}
+        className={`inset-0 fixed flex justify-center items-center bg-black/80  transition-all ease-in-out duration-300 ${scale?"scale-100 opacity-100":"scale-95 opacity-0"}`}
       >
         <CodeForm {...formProps}>
-          <Button {...btnProps}>{verifying ? "" : "Verify account"}</Button>
+          <MyButton {...btnProps}>{verifying ? "" : "Verify account"}</MyButton>
           <AfterForm {...afProps} />
         </CodeForm>
       </div>

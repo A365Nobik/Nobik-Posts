@@ -73,7 +73,7 @@ console.log(passResetUser.email);
   return createPortal(
     <>
       <div
-        className={`inset-0 fixed flex justify-center items-center bg-black/80  duration-400 scale-${scale}`}
+        className={`inset-0 fixed flex justify-center items-center bg-black/80  transition-all ease-in-out duration-300 ${scale?"scale-100 opacity-100":"scale-95 opacity-0"}`}
       >
         <CodeForm {...formProps}>
           <Button {...btnProps}>{verifying ? "" : "Verify Reset"}</Button>

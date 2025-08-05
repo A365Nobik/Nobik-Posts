@@ -1,4 +1,4 @@
-import Buttom from "../components/custom/MyButton"
+import MyButton from "../components/custom/MyButton"
 
 export default function Greeting(){
   return(
@@ -9,9 +9,9 @@ export default function Greeting(){
             We're introdusing the app in which You can make a posts and publish
             them
           </h3>
-          <Button formValid={true}>
+          <MyButton formValid={true}>
             <a href="/sign-up">Let's get started</a>
-          </Button>
+          </MyButton>
         </div>
       </div>
   )

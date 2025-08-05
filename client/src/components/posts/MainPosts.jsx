@@ -10,11 +10,11 @@ export default function MainPosts() {
     try {
       const request = await axios.get(`${apiUrl}/posts`);
       console.log(request.data);
-      setPosts(initialPost);
+      // setPosts(initialPost);
+      setPosts(request.data);
     } catch (error) {
       console.log(error);
       setPosts(initialPost);
-      cosnole.log(posts);
     }
   }, [apiUrl]);
 

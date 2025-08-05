@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { FaSearch } from "react-icons/fa";
 import { CgDarkMode } from "react-icons/cg";
+import { GiHamburgerMenu } from "react-icons/gi";
+
 import ThemeModal from "../../modal/ThemeModal";
 export default function NavBar() {
   const [userLogin, setUserLogin] = useState(false);
@@ -62,21 +64,22 @@ export default function NavBar() {
   return (
     <>
       <header className="w-full flex justify-around items-center p-2 border-b-2 bg-[var(--bg-secondary)] font-semibold text-[var(--text-)]">
+        <GiHamburgerMenu className="hidden text-3xl max-md:visible" />
         <div
           className={`flex justify-center items-center bg-[var(--bg-primary)] p-1 rounded-md text-lg transition-colors border-2 border-[var(--border-color)] ml-100 ${
             inputACtive ? "border-blue-500" : "border"
-          } min-2xl:ml-65 min-xl:ml-35 min-lg:ml-20 min-md:ml-10`}
+          } max-2xl:ml-65 max-xl:ml-35 max-lg:ml-20 max-md:ml-0`}
         >
           <input
             onFocus={() => setInputActive(true)}
             onBlur={() => setInputActive(false)}
             type="text"
-            className="outline-0 w-75 placeholder:text-[var(--text-primary)]"
+            className="outline-0 w-75 max-md:w-auto placeholder:text-[var(--text-primary)]"
             placeholder="Find post by title"
           />
           <FaSearch className="transition-transform active:scale-80 m-1" />
         </div>
-        <ul className="flex justify-center items-center gap-2.5">
+        <ul className="flex justify-center items-center gap-2.5 max-md:hidden">
           <li>
             <a
               className="text-xl transition-colors hover:text-blue-500"
@@ -129,7 +132,7 @@ export default function NavBar() {
         </ul>
 
         <button
-        type="button"
+          type="button"
           onClick={handleModalClick}
           className="theme-button flex justify-center items-center 
           text-xl border-2 focus:border-blue-600 p-1 rounded-md hover:bg-[var(--bg-primary)]"

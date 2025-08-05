@@ -52,7 +52,7 @@ export default function ThemeModal({ scale }) {
   return createPortal(
     <>
       <ul
-        className={`theme-modal fixed top-12.5 right-53.5  flex flex-col justify-center items-start bg-[var(--bg-primary)] w-35 p-1 border-2 rounded-md text-xl font-semibold gap-0.5 transition-all ease-in-out duration-300 ${scale?"scale-100 opacity-100":"scale-95 opacity-0"}`}
+        className={`theme-modal fixed top-12.5 right-53.5 min-2xl:right-21 flex flex-col justify-center items-start bg-[var(--bg-primary)] w-35 p-1 border-2 rounded-md text-xl font-semibold gap-0.5 transition-all ease-in-out duration-300 ${scale?"scale-100 opacity-100":"scale-95 opacity-0"}`}
       >
         <li
           ref={(event) => (chosedTheme.current[1] = event)}

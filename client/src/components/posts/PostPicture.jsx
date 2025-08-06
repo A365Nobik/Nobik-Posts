@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState } from "react";
-import PostPictureModal from "../modal/PostPictureModal";
+import PostPictureModal from "../modal/posts/PostPictureModal";
 
 export default function PostPicture({ pictures }) {
   const [photoIndex, setPhotoIndex] = useState(null);
@@ -49,10 +49,13 @@ export default function PostPicture({ pictures }) {
   };
   useEffect(() => {
     if (pictureModal) {
-      document.addEventListener("keydown", handlePictureModalCloseKey);
+      document.body.addEventListener("keydown", handlePictureModalCloseKey);
+      document.body.addEventListener("click", handlePictureModalClose);
     }
-    return () =>
-      document.addEventListener("keydown", handlePictureModalCloseKey);
+    return () => {
+      document.body.removeEventListener("keydown", handlePictureModalCloseKey);
+      document.body.removeEventListener("click", handlePictureModalClose);
+    };
   }, [pictureModal, handlePictureModalClose]);
 
   //   useEffect(() => {
@@ -82,7 +85,12 @@ export default function PostPicture({ pictures }) {
               onClick={(event) => handlePictureClick(event, photoIndex)}
               className="m-1 cursor-pointer picture justify-center items-center flex"
             >
-              <img className="object-cover   w-100 h-80" src={picture} alt={`Post picture`} loading='lazy' />
+              <img
+                className="object-cover aspect-square w-100 h-80"
+                src={picture}
+                alt={`Post picture`}
+                loading="lazy"
+              />
             </div>
           );
         })}

@@ -1,6 +1,6 @@
 import db from "../db/db.js";
 
-class PostServiseClass {
+class PostServiceClass {
   async getAllPosts() {
     const posts = await db.query(`SELECT posts.id
 ,posts.content
@@ -13,6 +13,10 @@ FROM posts
 full JOIN users ON posts.author_id = users.id;`);
     return posts.rows.map(({ password, ...post }) => post);
   }
+
+async createNewPost(){
+  
+}
 }
 
-export const PostServise = new PostServiseClass();
+export const PostService = new PostServiceClass();

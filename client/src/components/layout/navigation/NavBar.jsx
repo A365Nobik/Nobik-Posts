@@ -6,7 +6,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import ThemeModal from "../../modal/ThemeModal";
 export default function NavBar() {
   const [userLogin, setUserLogin] = useState(false);
-  const [inputACtive, setInputActive] = useState(false);
+  const [inputActive, setInputActive] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [scale, setScale] = useState(0);
   const user = JSON.parse(localStorage.getItem("user"));
@@ -32,7 +32,7 @@ export default function NavBar() {
       setScale(0);
       setTimeout(() => {
         setModalOpen(false);
-      }, 400);
+      }, 300);
     }
   }, []);
 
@@ -67,7 +67,7 @@ export default function NavBar() {
         <GiHamburgerMenu className="hidden text-3xl max-md:visible" />
         <div
           className={`flex justify-center items-center bg-[var(--bg-primary)] p-1 rounded-md text-lg transition-colors border-2 border-[var(--border-color)]  ${
-            inputACtive ? "border-blue-500" : "border"
+            inputActive ? "border-blue-500" : "border"
           } max-2xl:ml-65 max-xl:ml-35 max-lg:ml-20 max-md:ml-0`}
         >
           <input

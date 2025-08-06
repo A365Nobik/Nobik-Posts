@@ -18,7 +18,7 @@ export default function PassReset() {
   const [formValid, setFormValid] = useState(false);
   const [changing, setChanging] = useState(false);
   const [error, setError] = useState("");
-  const user = JSON.parse(localStorage.getItem("primaryUserPassoword"));
+  const user = JSON.parse(localStorage.getItem("primaryUserPassword"));
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const passwordHandler = (event) => {

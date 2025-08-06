@@ -3,7 +3,8 @@ import axios from "axios";
 import BasicForm from "../../components/forms/BasicForm";
 import AfterForm from "../../components/forms/AfterForm";
 import { MyInput, MyButton, MyError } from "../../components/custom/";
-import EmailVerify from "../../components/modal/EmailVerifyModal";
+import { EmailVerify } from "../../components/modal/verifications";
+
 export default function Register() {
   const [login, setLogin] = useState(null);
   const [email, setEmail] = useState(null);
@@ -14,7 +15,7 @@ export default function Register() {
     "Password should to be filled"
   );
   const [loginDirty, setLoginDirty] = useState(false);
-  const [emailDirty, setEmailnDirty] = useState(false);
+  const [emailDirty, setEmailDirty] = useState(false);
   const [passwordDirty, setPasswordDirty] = useState(false);
   const [formValid, setFormValid] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
@@ -64,7 +65,7 @@ export default function Register() {
         break;
       }
       case "email": {
-        setEmailnDirty(true);
+        setEmailDirty(true);
         break;
       }
       case "password": {

@@ -9,9 +9,8 @@ export default function MainPosts() {
 
   const getPosts = useCallback(async () => {
     try {
-      const request = await axios.get(`${apiUrl}/posts`);
+      const request = await axios.get(`${apiUrl||"172.16.0.2:4200"}/posts`);
       console.log(request.data);
-      // setPosts(initialPost);
       setPosts(request.data);
     } catch (error) {
       console.log(error);

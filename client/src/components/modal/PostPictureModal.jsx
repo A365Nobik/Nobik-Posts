@@ -1,22 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { IoIosArrowBack } from "react-icons/io";
-export default function PostPictureModal({ postInfo, photoIndex, scale }) {
+
+export default function PostPictureModal({ pictures, photoIndex, scale }) {
   const [index, setIndex] = useState(photoIndex);
 
   const nextPhoto = useCallback(() => {
     setIndex((prev) => {
       const nextIdex = prev + 1;
-      return nextIdex > postInfo.thumbnail.length - 1 ? 0 : nextIdex;
+      return nextIdex > pictures.length - 1 ? 0 : nextIdex;
     });
-  }, [postInfo]);
+  }, [pictures]);
 
   const prevPhoto = useCallback(() => {
     setIndex((prev) => {
       const prevIdex = prev - 1;
-      return prevIdex < 0 ? postInfo.thumbnail.length - 1 : prevIdex;
+      return prevIdex < 0 ? pictures.length - 1 : prevIdex;
     });
-  }, [postInfo]);
+  }, [pictures]);
   const handlePictureSwitch = useCallback(
     (event) => {
       if (event.key === "ArrowRight") {
@@ -44,7 +45,7 @@ export default function PostPictureModal({ postInfo, photoIndex, scale }) {
             <div className="relative">
               <img
                 className="object-contain  h-200 left-0 rounded-tl-2xl rounded-bl-2xl"
-                src={postInfo?.thumbnail[index]}
+                src={pictures[index]}
                 alt=""
               />
               <button onClick={() => prevPhoto(index)}>

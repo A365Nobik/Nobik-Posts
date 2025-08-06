@@ -2,6 +2,7 @@ import defaultAvatar from "../../../public/default-avatar.png";
 import { FaClock } from "react-icons/fa6";
 import { dateFormatter } from "../custom/functions/date-formatter";
 import PostPictureModal from "../modal/PostPictureModal";
+import PostPicture from "./PostPicture";
 import { useState, useEffect, useCallback } from "react";
 
 export default function Post({ post }) {
@@ -28,10 +29,20 @@ export default function Post({ post }) {
       }, 300);
     }
   }, []);
+  const handlePictureModalCloseKey = (event) => {
+    if (event.key === "Escape") {
+      setScale(0);
+      setTimeout(() => {
+        setPictureModal(false);
+      }, 300);
+    }
+  };
   useEffect(() => {
     if (pictureModal) {
-      document.addEventListener("click", handlePictureModalClose);
+      document.addEventListener("keydown", handlePictureModalCloseKey);
     }
+    return () =>
+      document.addEventListener("keydown", handlePictureModalCloseKey);
   }, [pictureModal, handlePictureModalClose]);
   return (
     <>
@@ -61,22 +72,7 @@ export default function Post({ post }) {
             </span>
           </div>
         </div>
-        <div
-          className={`grid grid-cols-${post?.thumbnail.length} justify-center items-center gap-0 p-0`}
-        >
-          {post?.thumbnail?.map((picture, index) => {
-            const photoIndex = index;
-            return (
-              <div
-                key={index}
-                onClick={(event) => handlePictureClick(event, photoIndex)}
-                className="m-1 cursor-pointer picture justify-center items-center flex"
-              >
-                <img className="object-cover" src={picture} alt={index} />
-              </div>
-            );
-          })}
-        </div>
+        {post?.thumbnail ? <PostPicture pictures={post?.thumbnail} /> : null}
         <div className="m-1 flex justify-center items-center overflow-auto text-left text-xl font-semibold">
           <p>{post?.content}</p>
         </div>

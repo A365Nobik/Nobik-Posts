@@ -66,7 +66,7 @@ export default function NavBar() {
       <header className="w-full flex justify-around items-center p-2 border-b-2 bg-[var(--bg-secondary)] font-semibold text-[var(--text-)]">
         <GiHamburgerMenu className="hidden text-3xl max-md:visible" />
         <div
-          className={`flex justify-center items-center bg-[var(--bg-primary)] p-1 rounded-md text-lg transition-colors border-2 border-[var(--border-color)] ml-100 ${
+          className={`flex justify-center items-center bg-[var(--bg-primary)] p-1 rounded-md text-lg transition-colors border-2 border-[var(--border-color)]  ${
             inputACtive ? "border-blue-500" : "border"
           } max-2xl:ml-65 max-xl:ml-35 max-lg:ml-20 max-md:ml-0`}
         >

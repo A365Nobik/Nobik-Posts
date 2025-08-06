@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Post, CreatePost, initialPost } from "./";
+import { AiOutlineLoading } from "react-icons/ai";
 
 export default function MainPosts() {
   const [posts, setPosts] = useState(null);
@@ -25,6 +26,12 @@ export default function MainPosts() {
   return (
     <div className="h-screen w-200 flex flex-col gap-2 items-center">
       <CreatePost />
+      {!posts ?(
+        <div className="flex flex-col justify-center items-center gap-1 font-semibold">
+          <p className="text-3xl">Please wait the posts are loading</p>
+           <AiOutlineLoading className="animate-spin text-2xl"/>
+          </div>
+      ) : null}
       {posts?.map((post, index) => {
         // console.table(post);
         return <Post key={index} post={post} />;

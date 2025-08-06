@@ -1,6 +1,6 @@
-import defaultAvatar from "../../../public/default-avatar.png";
+import defaultAvatar from "../../assets/default-avatar.png";
 import { FaClock } from "react-icons/fa6";
-import { dateFormatter } from "../custom/functions/date-formatter";
+import { dateFormatter } from "../custom/";
 import PostPicture from "./PostPicture";
 
 export default function Post({ post }) {

@@ -17,6 +17,7 @@ app.use(cors());
 app.use("", userRouter);
 app.use("", postRouter);
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(colors.bgGreen.white(`Server started on ${PORT} port`));
+  console.log(colors.bgBlue.white(`Server accessible from other computers`));
 });

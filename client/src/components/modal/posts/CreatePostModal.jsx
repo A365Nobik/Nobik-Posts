@@ -4,6 +4,8 @@ import { useRef, useState, useEffect } from "react";
 import { MyError, MyButton } from "../../custom/";
 import { useUser } from "../../../context/UserContext";
 import { FileCarousel } from "../../custom/";
+import axios from "axios"
+
 export default function CreateModalPost({ scale }) {
   const { user } = useUser();
   const inputFileRef = useRef(null);
@@ -11,8 +13,9 @@ export default function CreateModalPost({ scale }) {
   const [files, setFiles] = useState([]);
   const [contentError, setContentError] = useState(false);
   const [formValid, setFormValid] = useState(false);
-  const [creatingPost, setCreatinPost] = useState(false);
+  const [creatingPost, setCreatingPost] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (!user) {
       setContentError("Can't find a user!");
@@ -33,15 +36,20 @@ export default function CreateModalPost({ scale }) {
       setFiles(files);
     }
   };
-  const cretePost = (event) => {
+  const cretePost =async (event) => {
     event.preventDefault();
-    setCreatinPost(true);
+    setCreatingPost(true);
     setFormValid(false);
     inputFileRef.current.click();
     try {
-      console.log(123);
+      const request = await axios.post(`${apiUrl}/create-post`,{
+        author_id:user.id,
+        files:files,
+        content:content
+      })
+      console.log(request.data)
     } catch (error) {
-      setCreatinPost(false);
+      setCreatingPost(false);
       setFormValid(true);
       const errorData = error?.response?.data;
       console.log(error);
@@ -62,20 +70,21 @@ export default function CreateModalPost({ scale }) {
   };
 
   const contentHandler = () => {
-    if (!content) {
-      setContentError("Content should be filled!");
+    if (content?.length > 1000) {
       setFormValid(false);
+      setContentError("The maximum length of the content is 1,000 characters!");
     }
   };
 
   useEffect(() => {
-    if (!content || content.length > 1000) {
+    if (!content && files?.length===0) {
       setFormValid(false);
+      setContentError("Content of Files should be filled!");
     } else {
       setFormValid(true);
       setContentError(null);
     }
-  }, [content]);
+  }, [content, files]);
 
   return createPortal(
     <div
@@ -86,7 +95,7 @@ export default function CreateModalPost({ scale }) {
       <form className="new-post-modal flex justify-center items-center flex-col bg-[var(--bg-primary)] w-195 h-165 rounded-xl p-5 font-semibold border-2 border-[var(--text-secondary)]">
         <input
           onChange={(event) => handleFilesChange(event)}
-          accept="image/*,.video/*"
+          accept="image/*,video/*"
           multiple
           ref={inputFileRef}
           type="file"
@@ -94,7 +103,8 @@ export default function CreateModalPost({ scale }) {
           id=""
           hidden
         />
-        {files.length === 0 ? (
+        {console.log(files)}
+        {files?.length === 0 && (
           <div
             onClick={(event) => selectFiles(event)}
             className="flex flex-col justify-center items-center transition-colors border-2 border- hover:bg-[var(--bg-secondary)] rounded-2xl m-2.5 p-2.5"
@@ -105,14 +115,16 @@ export default function CreateModalPost({ scale }) {
               Upload from device
             </button>
           </div>
-        ) : (
+        ) }
+
+        {files?.length>0&&  (
           <div className="flex flex-col justify-center items-center m-1.5 gap-1">
-            <FileCarousel filesTaken={files} setTakenFiles={setFiles}/>
+            <FileCarousel filesTaken={files} setTakenFiles={setFiles} />
             <button
               onClick={(event) => selectFiles(event)}
               className="text-2xl p-1 rounded-lg transition-all border-2 hover:bg-[var(--bg-primary)] active:scale-90"
             >
-              Select Again
+              Select another
             </button>
           </div>
         )}
@@ -123,7 +135,6 @@ export default function CreateModalPost({ scale }) {
           <span className="flex flex-col justify-center items-start m-1 text-xl font-semibold">
             <label htmlFor="content">The content of your post</label>
             <textarea
-              required={true}
               id="content"
               onChange={handleContentChange}
               onBlur={contentHandler}

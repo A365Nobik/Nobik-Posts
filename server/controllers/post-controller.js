@@ -13,8 +13,9 @@ class PostControllerClass {
   }
     async createPost(req, res) {
     try {
-      const newPosts = await PostService.createNewPost();
-      res.status(200).json(posts);
+    const {author_id,files,content}=req.body
+      const newPosts = await PostService.createNewPost(author_id,files,content);
+      res.status(200).json(newPosts);
     } catch (error) {
       console.log(colors.bgRed("Get All Posts Error:", error));
       res.status(400).json(error.message);

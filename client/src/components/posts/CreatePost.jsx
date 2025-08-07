@@ -17,7 +17,8 @@ export default function CreatePost() {
     if (
       !event.target.closest(".new-post-modal") &&
       !event.target.closest(".create-button") &&
-      !event.target.closest(".error")
+      !event.target.closest(".error")&&
+      !event.target.closest(".close-btn")
     ) {
       setScale(0);
       setTimeout(() => {

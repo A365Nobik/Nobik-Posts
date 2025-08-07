@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { MyError, MyButton } from "../../custom/";
 import { useUser } from "../../../context/UserContext";
 import { FileCarousel } from "../../custom/";
-import axios from "axios"
+import axios from "axios";
 
 export default function CreateModalPost({ scale }) {
   const { user } = useUser();
@@ -23,8 +23,9 @@ export default function CreateModalPost({ scale }) {
     }
   }, [user]);
 
-  const selectFiles = () => {
-    // event.preventDefault();
+  const selectFiles = (event) => {
+    event.preventDefault();
+
     inputFileRef.current.click();
   };
 
@@ -36,18 +37,22 @@ export default function CreateModalPost({ scale }) {
       setFiles(files);
     }
   };
-  const cretePost =async (event) => {
+  const createPost = async (event) => {
     event.preventDefault();
     setCreatingPost(true);
     setFormValid(false);
-    inputFileRef.current.click();
+
     try {
-      const request = await axios.post(`${apiUrl}/create-post`,{
-        author_id:user.id,
-        files:files,
-        content:content
-      })
-      console.log(request.data)
+      const formData = new FormData();
+      formData.append("author_id", user.id);
+      formData.append("content", content);
+      files.forEach((file) => formData.append("files", file));
+      const request = await axios.post(`${apiUrl}/create-post`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(request);
     } catch (error) {
       setCreatingPost(false);
       setFormValid(true);
@@ -77,9 +82,8 @@ export default function CreateModalPost({ scale }) {
   };
 
   useEffect(() => {
-    if (!content && files?.length===0) {
+    if (!content && files?.length === 0) {
       setFormValid(false);
-      setContentError("Content of Files should be filled!");
     } else {
       setFormValid(true);
       setContentError(null);
@@ -92,7 +96,7 @@ export default function CreateModalPost({ scale }) {
         scale ? "scale-100 opacity-100" : "scale-95 opacity-0"
       }`}
     >
-      <form className="new-post-modal flex justify-center items-center flex-col bg-[var(--bg-primary)] w-195 h-165 rounded-xl p-5 font-semibold border-2 border-[var(--text-secondary)]">
+      <div className="new-post-modal flex justify-center items-center flex-col bg-[var(--bg-primary)] w-195 h-165 rounded-xl p-5 font-semibold border-2 border-[var(--text-secondary)]">
         <input
           onChange={(event) => handleFilesChange(event)}
           accept="image/*,video/*"
@@ -103,7 +107,6 @@ export default function CreateModalPost({ scale }) {
           id=""
           hidden
         />
-        {console.log(files)}
         {files?.length === 0 && (
           <div
             onClick={(event) => selectFiles(event)}
@@ -115,9 +118,9 @@ export default function CreateModalPost({ scale }) {
               Upload from device
             </button>
           </div>
-        ) }
+        )}
 
-        {files?.length>0&&  (
+        {files?.length > 0 && (
           <div className="flex flex-col justify-center items-center m-1.5 gap-1">
             <FileCarousel filesTaken={files} setTakenFiles={setFiles} />
             <button
@@ -128,7 +131,7 @@ export default function CreateModalPost({ scale }) {
             </button>
           </div>
         )}
-        <div className="flex flex-col justify-center items-center  gap-2.5">
+        <form className="flex flex-col justify-center items-center  gap-2.5">
           {contentError ? (
             <MyError anyError={contentError} setAnyError={setContentError} />
           ) : null}
@@ -144,15 +147,15 @@ export default function CreateModalPost({ scale }) {
             ></textarea>
           </span>
           <MyButton
-            handleClick={cretePost}
+            handleClick={(event) => createPost(event)}
             formValid={formValid}
             doing={creatingPost}
             width="w-1/1"
           >
-            {!creatingPost ? "Create a post" : null}
+            {!creatingPost ? "Create" : null}
           </MyButton>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>,
     document.body
   );

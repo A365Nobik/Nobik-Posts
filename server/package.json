@@ -4,15 +4,15 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js "
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@supabase/supabase-js": "^2.53.1",
-    "argon2": "^0.43.1",
+    "@supabase/supabase-js": "^2.54.0",
     "bcrypt": "^6.0.0",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.7",
@@ -20,6 +20,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
     "node-cron": "^4.2.1",
     "nodemailer": "^7.0.5",
     "pg": "^8.16.0",

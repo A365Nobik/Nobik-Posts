@@ -4,8 +4,6 @@ import { IoClose } from "react-icons/io5";
 export default function FileCarousel({ filesTaken, setTakenFiles }) {
   const [index, setIndex] = useState(0);
   const [files, setFiles] = useState(() => [...filesTaken]);
-  console.log(files);
-  console.log(filesTaken);
 
   const nextPhoto = useCallback(() => {
     setIndex((prev) => {
@@ -68,7 +66,7 @@ export default function FileCarousel({ filesTaken, setTakenFiles }) {
       ) : null}
       <button
         onClick={() => deletePhoto(index)}
-        className="absolute right-2 top-1/4 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+        className="absolute right-2 top-1/4 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors close-btn"
       >
         <IoClose className="text-2xl" />
       </button>

@@ -36,25 +36,29 @@ export default function PostPictureModal({ pictures, photoIndex, scale }) {
   return createPortal(
     <>
       <div
-        className={`inset-0 fixed flex justify-center items-center bg-black/80  transition-all ease-in-out duration-300 ${
+        className={`inset-0 fixed flex justify-center items-center bg-black/80 transition-all ease-in-out duration-300 ${
           scale ? "scale-100 opacity-100" : "scale-95 opacity-0"
         }`}
       >
-        <div className="picture-modal  bg-[var(--bg-secondary)] w-320 h-200 rounded-2xl">
-          <div className="flex justify-center items-center">
-            <div className="relative">
-              <img
-                className="object-contain  h-200 left-0 rounded-tl-2xl rounded-bl-2xl"
-                src={pictures[index]}
-                alt=""
-              />
-              <button onClick={() => prevPhoto(index)}>
-                <IoIosArrowBack className="text-5xl font-semibold text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)] absolute left-0 translate-y-100" />
-              </button>
-              <button onClick={() => nextPhoto(index)}>
-                <IoIosArrowBack className="rotate-180 text-5xl font-semibold text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)] absolute right-0 translate-y-100" />
-              </button>
-            </div>
+        <div className="picture-modal bg-[var(--bg-secondary)] w-320 h-200 rounded-2xl">
+          <div className="flex justify-center items-center relative">
+            <img
+              className="object-contain w-320 h-200 rounded-tl-2xl rounded-bl-2xl -translate-x-1/4"
+              src={pictures[index]}
+              alt=""
+            />
+          <button
+            onClick={prevPhoto}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+          >
+            <IoIosArrowBack className="text-2xl" />
+          </button>
+          <button
+            onClick={nextPhoto}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+          >
+            <IoIosArrowBack className="rotate-180 text-2xl" />
+          </button>
           </div>
         </div>
       </div>

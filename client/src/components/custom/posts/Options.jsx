@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { SlOptions } from "react-icons/sl";
 import { IoIosCopy } from "react-icons/io";
 import { IoBookmarks } from "react-icons/io5";
+import { MdReport, MdEdit, MdDelete } from "react-icons/md";
 
-import { MdReport } from "react-icons/md";
-
-export default function Options() {
+export default function Options({ isAuthor }) {
   const [open, setOpen] = useState(false);
   const [scale, setScale] = useState(0);
   const liClass =
@@ -25,7 +24,18 @@ export default function Options() {
     }
   };
 
-  const handleOptionCLoseKey = (event) => {
+  const handleOptionClose = (event) => {
+    if (!event.target.closest(".options")) {
+      if (event.key === "Escape") {
+        setScale(0);
+        setTimeout(() => {
+          setOpen(false);
+        }, 300);
+      }
+    }
+  };
+
+  const handleOptionCloseKey = (event) => {
     if (event.key === "Escape") {
       setScale(0);
       setTimeout(() => {
@@ -36,10 +46,13 @@ export default function Options() {
 
   useEffect(() => {
     if (open) {
-      document.body.addEventListener("keydown", handleOptionCLoseKey);
+      document.body.addEventListener("keydown", handleOptionCloseKey);
+      document.body.addEventListener("click", handleOptionClose);
     }
-    return () =>
-      document.body.removeEventListener("keydown", handleOptionCLoseKey);
+    return () => {
+      document.body.removeEventListener("keydown", handleOptionCloseKey);
+      document.body.removeEventListener("click", handleOptionClose);
+    };
   });
 
   return (
@@ -50,7 +63,7 @@ export default function Options() {
       />
       {open && (
         <ul
-          className={`flex flex-col justify-start items-start bg-[var(--bg-primary)] p-1 border-2 rounded-md text-lg font-semibold gap-0.5  transition-all ease-in-out duration-300 ${
+          className={`options flex flex-col justify-start items-start bg-[var(--bg-primary)] p-1 border-2 rounded-md text-lg font-semibold gap-0.5  transition-all ease-in-out duration-300 ${
             scale ? "scale-100 opacity-100" : "scale-95 opacity-0"
           }`}
         >
@@ -62,10 +75,24 @@ export default function Options() {
             <IoBookmarks />
             <p>Add to favorites</p>
           </li>
-          <li className={liClass}>
-            <MdReport />
-            <p>Report</p>
-          </li>
+          {!isAuthor ? (
+            <li className={liClass}>
+              <MdReport />
+              <p>Report</p>
+            </li>
+          ) : (
+            <>
+              <hr className="w-full" />
+              <li className={liClass}>
+                <MdEdit />
+                <p>Edit</p>
+              </li>
+              <li className={liClass}>
+                <MdDelete />
+                <p>Delete</p>
+              </li>
+            </>
+          )}
         </ul>
       )}
     </div>

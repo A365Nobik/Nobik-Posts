@@ -41,7 +41,6 @@ export default function CreateModalPost({ scale }) {
     event.preventDefault();
     setCreatingPost(true);
     setFormValid(false);
-
     try {
       const formData = new FormData();
       formData.append("author_id", user.id);
@@ -52,6 +51,7 @@ export default function CreateModalPost({ scale }) {
           "Content-Type": "multipart/form-data",
         },
       });
+      location.reload()
       console.log(request);
     } catch (error) {
       setCreatingPost(false);

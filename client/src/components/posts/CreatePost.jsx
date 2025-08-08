@@ -49,7 +49,7 @@ export default function CreatePost() {
   return (
     <>
       {modal ? <CreateModalPost scale={scale} /> : null}
-      <div className="w-full flex justify-center items-center bg-[var(--bg-secondary)] p-1  mt-2 rounded-md">
+      <div className="w-full flex justify-center items-center bg-[var(--bg-secondary)] p-1 mt-2 rounded-md">
         <button
           onClick={handleModalClick}
           className="text-xl flex justify-center items-center font-semibold p-1.5 rounded-lg transition-all hover:bg-[var(--bg-primary)] hover:text-blue-400 active:scale-90 create-button"

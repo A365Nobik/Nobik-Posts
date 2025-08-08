@@ -1,9 +1,8 @@
 import BasicForm from "../../components/forms/BasicForm";
 import { useState, useEffect } from "react";
-import Button from "../../components/custom/MyButton";
 import axios from "axios";
-import MyInput from "../../components/custom/MyInput";
 import { ModalPassResetVerify } from "../../components/modal/verifications";
+import { MyButton, MyInput } from "../../components/custom";
 
 export default function PasswordResetSend() {
   const [email, setEmail] = useState(null);
@@ -99,7 +98,7 @@ export default function PasswordResetSend() {
           dirty={emailDirty}
           error={emailError}
         />
-        <Button {...btnProps}>{sending ? "" : "Reset password"}</Button>
+        <MyButton {...btnProps}>{sending ? "" : "Reset password"}</MyButton>
       </BasicForm>
       {isModalOpen ? (
         <ModalPassResetVerify scale={modalScale} setScale={setModalScale} />

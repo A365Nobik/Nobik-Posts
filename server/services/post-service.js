@@ -26,7 +26,7 @@ full JOIN users ON posts.author_id = users.id;`);
       content: content,
       files: files,
     });
-    const uploadedPromice = files.map(async (file, idx) => {
+    const uploadedPromise = files.map(async (file, idx) => {
       try {
         const extension = file.mimetype.split("/")[1];
         const name = `${postId}/${idx}/${extension}`;
@@ -51,7 +51,7 @@ full JOIN users ON posts.author_id = users.id;`);
         throw error;
       }
     });
-    const filesUrl = await Promise.all(uploadedPromice);
+    const filesUrl = await Promise.all(uploadedPromise);
     console.log(filesUrl);
     const newPost = await db.query(
       "INSERT INTO posts (id,content,thumbnails,author_id) values($1,$2,$3,$4) RETURNING *",

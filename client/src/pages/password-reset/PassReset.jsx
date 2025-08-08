@@ -1,7 +1,6 @@
 import axios from "axios";
 import BasicForm from "../../components/forms/BasicForm";
-import Button from "../../components/custom/MyButton";
-import MyInput from "../../components/custom/MyInput";
+import { MyButton, MyInput } from "../../components/custom";
 import { useState, useEffect } from "react";
 
 export default function PassReset() {
@@ -60,7 +59,7 @@ export default function PassReset() {
       }
     }
   };
-  
+
   useEffect(() => {
     if (
       password !== passwordConfirm &&
@@ -135,7 +134,7 @@ export default function PassReset() {
           dirty={passwordConfirmDirty}
           error={passwordConfirmError}
         />
-        <Button {...btnProps}>{changing ? "" : "Update"}</Button>
+        <MyButton {...btnProps}>{changing ? "" : "Update"}</MyButton>
       </BasicForm>
     </>
   );

@@ -2,11 +2,25 @@ import defaultAvatar from "../../assets/default-avatar.png";
 import { FaClock } from "react-icons/fa6";
 import { Options } from "../custom/";
 import { useUser } from "../../context/UserContext";
-
+import axios from "axios";
 import { dateFormatter } from "../custom/";
-import PostPicture from "./PostPicture";
+import { PostThumbnails } from "./";
+
 export default function Post({ post }) {
   const { user } = useUser();
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  const deletePost = async () => {
+    try {
+      const request = await axios.delete(
+        `${apiUrl}/delete-post/${post.id}/${user.id}`
+      );
+      console.log(request);
+      location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="bg-[var(--bg-secondary)] border-2 flex flex-col justify-center rounded-md p-1 w-full">
@@ -27,9 +41,12 @@ export default function Post({ post }) {
             </p>
           </span>
         </div>
-        <Options isAuthor={user?.id === post?.author_id} />
+        <Options
+          isAuthor={user?.id === post?.author_id}
+          deletePost={deletePost}
+        />
       </div>
-      {post?.thumbnails ? <PostPicture pictures={post?.thumbnails} /> : null}
+      {post?.thumbnails ? <PostThumbnails files={post?.thumbnails} /> : null}
       <div className="m-1 flex justify-center items-center overflow-auto text-left text-xl font-semibold">
         <p>{post?.content}</p>
       </div>

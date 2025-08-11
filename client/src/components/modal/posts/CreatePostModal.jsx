@@ -31,10 +31,18 @@ export default function CreateModalPost({ scale }) {
 
   const handleFilesChange = (event) => {
     if (event.target.files) {
-      const files = Array.from(event.target.files).filter(
+      const allFiles = Array.from(event.target.files).filter(
         (file) => file.type.includes("image") || file.type.includes("video")
       );
-      setFiles(files);
+      const validFilesSize = allFiles.filter((file) => file.size > 5000000);
+      if (validFilesSize.length > 0) {
+        setContentError("Files too large! Maximum size is 5 MB");
+        setFiles([]);
+        event.target.value = "";
+        return;
+      } else {
+        setFiles(allFiles);
+      }
     }
   };
   const createPost = async (event) => {
@@ -51,7 +59,7 @@ export default function CreateModalPost({ scale }) {
           "Content-Type": "multipart/form-data",
         },
       });
-      location.reload()
+      location.reload();
       console.log(request);
     } catch (error) {
       setCreatingPost(false);
@@ -103,8 +111,6 @@ export default function CreateModalPost({ scale }) {
           multiple
           ref={inputFileRef}
           type="file"
-          name=""
-          id=""
           hidden
         />
         {files?.length === 0 && (

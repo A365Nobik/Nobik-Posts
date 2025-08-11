@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../supabase/client.js";
 
 class PostServiceClass {
-  primaryPosts = new Map();
+  bucket = "posts-thumbnails";
   async getAllPosts() {
     const posts = await db.query(`SELECT posts.id
 ,posts.content
@@ -13,26 +13,20 @@ class PostServiceClass {
 ,users.login
 ,users.avatar
 FROM posts 
-full JOIN users ON posts.author_id = users.id;`);
+JOIN users ON posts.author_id = users.id;`);
 
     return posts.rows.map(({ password, ...post }) => post);
   }
 
   async createNewPost(author_id, content, files) {
     const postId = uuidv4();
-    this.primaryPosts.set(postId, {
-      postId: postId,
-      author_id: author_id,
-      content: content,
-      files: files,
-    });
     const uploadedPromise = files.map(async (file, idx) => {
       try {
         const extension = file.mimetype.split("/")[1];
-        const name = `${postId}/${idx}/${extension}`;
-
+        const type = file.mimetype.split("/")[0];
+        const name = `${postId}/${type + idx}/${extension}`;
         const { data, error } = await supabase.storage
-          .from("posts-thumbnails")
+          .from(this.bucket)
           .upload(name, file.buffer, {
             contentType: file.mimetype,
             cacheControl: "3600",
@@ -52,12 +46,38 @@ full JOIN users ON posts.author_id = users.id;`);
       }
     });
     const filesUrl = await Promise.all(uploadedPromise);
-    console.log(filesUrl);
     const newPost = await db.query(
       "INSERT INTO posts (id,content,thumbnails,author_id) values($1,$2,$3,$4) RETURNING *",
       [postId, content, filesUrl, author_id]
     );
     return newPost.rows[0];
+  }
+  async deletedPost(id, author_id) {
+    const postCandidate = await db.query("SELECT * FROM posts WHERE id=$1", [
+      id,
+    ]);
+    if (!postCandidate.rows[0]) {
+      throw new Error("Post is not found!");
+    }
+    if (postCandidate.rows[0].author_id !== author_id) {
+      throw new Error("You can't delete this post!");
+    }
+    const files = postCandidate.rows[0].thumbnails;
+    if (postCandidate.rows[0].thumbnails.length > 0) {
+      const filesUrls = files.map((file) => file.split("/").slice(8).join("/"));
+      try {
+        const { data, error } = await supabase.storage
+          .from(this.bucket)
+          .remove(filesUrls);
+        if (error) {
+          throw new Error(error);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    const deletedPost = await db.query("DELETE FROM posts WHERE id=$1", [id]);
+    return deletedPost.rows[0];
   }
 }
 

@@ -4,7 +4,7 @@ import { IoIosCopy } from "react-icons/io";
 import { IoBookmarks } from "react-icons/io5";
 import { MdReport, MdEdit, MdDelete } from "react-icons/md";
 
-export default function Options({ isAuthor }) {
+export default function Options({ isAuthor, deletePost }) {
   const [open, setOpen] = useState(false);
   const [scale, setScale] = useState(0);
   const liClass =
@@ -26,12 +26,10 @@ export default function Options({ isAuthor }) {
 
   const handleOptionClose = (event) => {
     if (!event.target.closest(".options")) {
-      if (event.key === "Escape") {
-        setScale(0);
-        setTimeout(() => {
-          setOpen(false);
-        }, 300);
-      }
+      setScale(0);
+      setTimeout(() => {
+        setOpen(false);
+      }, 300);
     }
   };
 
@@ -56,14 +54,14 @@ export default function Options({ isAuthor }) {
   });
 
   return (
-    <div className="flex flex-col justify-center items-start">
+    <div className="options flex flex-col justify-center items-start ">
       <SlOptions
         onClick={handleClick}
         className="text-2xl p-1 rounded-full transition-colors hover:bg-[var(--bg-primary)]"
       />
       {open && (
         <ul
-          className={`options flex flex-col justify-start items-start bg-[var(--bg-primary)] p-1 border-2 rounded-md text-lg font-semibold gap-0.5  transition-all ease-in-out duration-300 ${
+          className={`flex flex-col justify-start items-start bg-[var(--bg-primary)] p-1 border-2 rounded-md text-lg font-semibold gap-0.5  transition-all ease-in-out duration-300 ${
             scale ? "scale-100 opacity-100" : "scale-95 opacity-0"
           }`}
         >
@@ -87,7 +85,7 @@ export default function Options({ isAuthor }) {
                 <MdEdit />
                 <p>Edit</p>
               </li>
-              <li className={liClass}>
+              <li onClick={deletePost} className={liClass}>
                 <MdDelete />
                 <p>Delete</p>
               </li>

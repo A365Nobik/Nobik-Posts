@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState } from "react";
 import PostPictureModal from "../modal/posts/PostPictureModal";
 
-export default function PostPicture({ pictures }) {
+export default function PostThumbnails({ files }) {
   const [photoIndex, setPhotoIndex] = useState(null);
   const [pictureModal, setPictureModal] = useState(false);
   const [scale, setScale] = useState(100);
@@ -67,17 +67,17 @@ export default function PostPicture({ pictures }) {
     <>
       {pictureModal ? (
         <PostPictureModal
-          pictures={pictures}
+          pictures={files}
           photoIndex={photoIndex}
           scale={scale}
         />
       ) : null}
       <div
         className={`grid ${picturesHandler(
-          pictures
+          files
         )} justify-center items-center gap-0 p-0`}
       >
-        {pictures.map((picture, index) => {
+        {files.map((file, index) => {
           const photoIndex = index;
           return (
             <div
@@ -85,12 +85,22 @@ export default function PostPicture({ pictures }) {
               onClick={(event) => handlePictureClick(event, photoIndex)}
               className="m-1 cursor-pointer picture justify-center items-center flex"
             >
-              <img
-                className="object-cover aspect-square w-100 h-80"
-                src={picture}
-                alt={`Post picture`}
-                loading="lazy"
-              />
+              {file.includes('image')||file.includes('gif') ? (
+                <img
+                  className="object-cover aspect-square w-100 h-80"
+                  src={file}
+                  alt={`Post picture`}
+                  loading="lazy"
+                />
+              ) : (
+                <video
+                  controls
+                  className="object-cover aspect-square w-100 h-80"
+                  src={file}
+                  alt={`Post picture`}
+                  loading="lazy"
+                />
+              )}
             </div>
           );
         })}

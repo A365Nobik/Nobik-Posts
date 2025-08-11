@@ -20,7 +20,7 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    fileSize:5 * 1024* 1024,
+    fileSize: 5 * 1024 * 1024,
     files: 10,
   },
 });
@@ -31,5 +31,6 @@ router.post(
   upload.array("files", 10),
   PostController.createPost
 );
+router.delete("/delete-post/:id/:author_id", PostController.deletePost);
 
 export default router;

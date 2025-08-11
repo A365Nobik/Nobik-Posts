@@ -7,7 +7,6 @@ import {
   initialPost,
   LoadingPosts,
 } from "./";
-import { AiOutlineLoading } from "react-icons/ai";
 
 export default function MainPosts() {
   const [posts, setPosts] = useState(null);

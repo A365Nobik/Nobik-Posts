@@ -1,8 +1,8 @@
 import nodemailer from "nodemailer";
 
 const auth = {
-  user: process.env.SMTP_USER,
-  pass: process.env.SMTP_PASSWORD,
+  user: "nobik.posts@gmail.com",
+  pass: "balx ofip ryma iydz",
 };
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",

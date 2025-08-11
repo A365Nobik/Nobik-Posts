@@ -31,9 +31,12 @@ export default function CreateModalPost({ scale }) {
   const handleFilesChange = (event) => {
     if (event.target.files) {
       const allFiles = Array.from(event.target.files).filter(
-        (file) => file.type.includes("image") || file.type.includes("video")
+        (file) =>
+          file.type.includes("image") ||
+          file.type.includes("video") ||
+          file.type.includes("audio")
       );
-      const validFilesSize = allFiles.filter((file) => file.size > 5000000);
+      const validFilesSize = allFiles.filter((file) => file.size > 5242880);
       if (validFilesSize.length > 0) {
         setContentError("Files too large! Maximum size is 5 MB");
         setFiles([]);
@@ -99,7 +102,7 @@ export default function CreateModalPost({ scale }) {
       <div className="new-post-modal flex justify-center items-center flex-col bg-[var(--bg-primary)] w-195 h-165 rounded-xl p-5 font-semibold border-2 border-[var(--text-secondary)]">
         <input
           onChange={(event) => handleFilesChange(event)}
-          accept="image/*,video/*"
+          accept="image/*,video/*,audio/*"
           multiple
           ref={inputFileRef}
           type="file"

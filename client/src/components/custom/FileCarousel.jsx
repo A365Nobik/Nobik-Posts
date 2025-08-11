@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
+import { Audio } from "./";
+
 export default function FileCarousel({ filesTaken, setTakenFiles }) {
   const [index, setIndex] = useState(0);
   const [files, setFiles] = useState(() => [...filesTaken]);
@@ -63,6 +65,9 @@ export default function FileCarousel({ filesTaken, setTakenFiles }) {
           src={URL.createObjectURL(files[index])}
           className="w-full h-full object-contain rounded"
         />
+      ) : null}
+      {files[index]?.type?.includes("audio/") ? (
+        <Audio audio={files[index]} />
       ) : null}
       <button
         onClick={() => deletePhoto(index)}

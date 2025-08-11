@@ -1,5 +1,3 @@
-import { FaClock } from "react-icons/fa6";
-
 export default function LoadingPosts() {
   return (
     <div className="bg-[var(--bg-secondary)] border-2 flex flex-col justify-center rounded-md p-1 w-full">

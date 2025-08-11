@@ -1,7 +1,7 @@
 import BasicForm from "../../components/forms/BasicForm";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ModalPassResetVerify } from "../../components/modal/verifications";
+import { PassResetVerify } from "../../components/modal";
 import { MyButton, MyInput } from "../../components/custom";
 
 export default function PasswordResetSend() {
@@ -101,7 +101,7 @@ export default function PasswordResetSend() {
         <MyButton {...btnProps}>{sending ? "" : "Reset password"}</MyButton>
       </BasicForm>
       {isModalOpen ? (
-        <ModalPassResetVerify scale={modalScale} setScale={setModalScale} />
+        <PassResetVerify scale={modalScale} setScale={setModalScale} />
       ) : (
         ""
       )}

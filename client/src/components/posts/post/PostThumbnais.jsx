@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from "react";
-import PostPictureModal from "../modal/posts/PostPictureModal";
-
+import {PostPictureModal} from "../../modal";
+import { FileCarousel } from "../../custom";
 export default function PostThumbnails({ files }) {
   const [photoIndex, setPhotoIndex] = useState(null);
   const [pictureModal, setPictureModal] = useState(false);
@@ -58,11 +58,6 @@ export default function PostThumbnails({ files }) {
     };
   }, [pictureModal, handlePictureModalClose]);
 
-  //   useEffect(() => {
-  //     if (pictures) {
-  //       picturesHandler(pictures);
-  //     }
-  //   }, []);
   return (
     <>
       {pictureModal ? (
@@ -83,11 +78,11 @@ export default function PostThumbnails({ files }) {
             <div
               key={index}
               onClick={(event) => handlePictureClick(event, photoIndex)}
-              className="m-1 cursor-pointer picture justify-center items-center flex"
+              className="cursor-pointer picture flex justify-center items-center select-none"
             >
               {file.includes('image')||file.includes('gif') ? (
                 <img
-                  className="object-cover aspect-square w-100 h-80"
+                  className="w-full h-full aspect-auto"
                   src={file}
                   alt={`Post picture`}
                   loading="lazy"
@@ -95,7 +90,7 @@ export default function PostThumbnails({ files }) {
               ) : (
                 <video
                   controls
-                  className="object-cover aspect-square w-100 h-80"
+                  className="w-full h-full aspect-video"
                   src={file}
                   alt={`Post picture`}
                   loading="lazy"

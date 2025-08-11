@@ -6,7 +6,7 @@ import {
   CreatePostLoading,
   initialPost,
   LoadingPosts,
-} from "./";
+} from ".";
 
 export default function MainPosts() {
   const [posts, setPosts] = useState(null);
@@ -41,10 +41,10 @@ export default function MainPosts() {
   return (
     <div className="h-screen w-200 flex flex-col gap-2 items-center">
       {!posts ? <CreatePostLoading /> : <CreatePost />}
-      {!posts && new Array(3).fill(0).map((_,idx) => <LoadingPosts key={idx}/>)}
+      {!posts &&
+        new Array(3).fill(0).map((_, idx) => <LoadingPosts key={idx} />)}
       {posts?.map((post, index) => {
-        // console.table(post);
-        return <Post key={index} post={post} />;
+        return <Post key={index} post={post} index={index} />;
       })}
     </div>
   );

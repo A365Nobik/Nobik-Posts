@@ -3,7 +3,7 @@ import axios from "axios";
 import BasicForm from "../../components/forms/BasicForm";
 import AfterForm from "../../components/forms/AfterForm";
 import { MyInput, MyButton, MyError } from "../../components/custom/";
-import { EmailVerify } from "../../components/modal/verifications";
+import { EmailVerify } from "../../components/modal";
 
 export default function Register() {
   const [login, setLogin] = useState(null);

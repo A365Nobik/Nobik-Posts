@@ -1,5 +1,5 @@
 import { IoMdAdd } from "react-icons/io";
-import { CreateModalPost } from "../modal/posts";
+import { CreateModalPost } from "../modal";
 import { useState, useEffect } from "react";
 
 export default function CreatePost() {

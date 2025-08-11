@@ -25,7 +25,6 @@ export default function CreateModalPost({ scale }) {
 
   const selectFiles = (event) => {
     event.preventDefault();
-
     inputFileRef.current.click();
   };
 
@@ -77,20 +76,13 @@ export default function CreateModalPost({ scale }) {
   const handleContentChange = (event) => {
     const value = event.target.value;
     setContent(value);
-    if (value.length >= 1000) {
-      setContentError("Max length of content");
-    }
-  };
-
-  const contentHandler = () => {
-    if (content?.length > 1000) {
-      setFormValid(false);
-      setContentError("The maximum length of the content is 1,000 characters!");
-    }
   };
 
   useEffect(() => {
     if (!content && files?.length === 0) {
+      setFormValid(false);
+    } else if (content?.length > 1000) {
+      setCreatingPost(false);
       setFormValid(false);
     } else {
       setFormValid(true);
@@ -144,13 +136,20 @@ export default function CreateModalPost({ scale }) {
           <span className="flex flex-col justify-center items-start m-1 text-xl font-semibold">
             <label htmlFor="content">The content of your post</label>
             <textarea
+              spellCheck
               id="content"
               onChange={handleContentChange}
-              onBlur={contentHandler}
               className="outline-none resize-none w-120 h-45 p-1.5 border-2 rounded-lg border-[var(--border-color)] transition-all focus:border-blue-600"
               placeholder="Write something"
-              maxLength={1000}
             ></textarea>
+            <div
+              id="length"
+              className={`w-full flex justify-end items-end text-xl font-semibold ${
+                content?.length > 1000 ? "text-red-600 animate-pulse" : ""
+              }`}
+            >
+              {`${content?.length ? content?.length : "0"}/1000`}
+            </div>
           </span>
           <MyButton
             handleClick={(event) => createPost(event)}

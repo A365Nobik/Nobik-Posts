@@ -13,7 +13,8 @@ class PostServiceClass {
 ,users.login
 ,users.avatar
 FROM posts 
-JOIN users ON posts.author_id = users.id;`);
+JOIN users ON posts.author_id = users.id
+ORDER BY posts.created_at DESC;`);
 
     return posts.rows.map(({ password, ...post }) => post);
   }
@@ -48,7 +49,7 @@ JOIN users ON posts.author_id = users.id;`);
     const filesUrl = await Promise.all(uploadedPromise);
     const newPost = await db.query(
       "INSERT INTO posts (id,content,thumbnails,author_id) values($1,$2,$3,$4) RETURNING *",
-      [postId, content, filesUrl, author_id]
+      [postId, !content?" ":content, filesUrl, author_id]
     );
     return newPost.rows[0];
   }

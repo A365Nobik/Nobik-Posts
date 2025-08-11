@@ -2,7 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { IoIosArrowBack } from "react-icons/io";
 
-export default function PostPictureModal({ pictures, photoIndex, scale }) {
+export default function PostPictureModal({
+  pictures,
+  photoIndex,
+  scale,
+  postInfo,
+}) {
   const [index, setIndex] = useState(photoIndex);
 
   const nextPhoto = useCallback(() => {
@@ -40,28 +45,49 @@ export default function PostPictureModal({ pictures, photoIndex, scale }) {
           scale ? "scale-100 opacity-100" : "scale-95 opacity-0"
         }`}
       >
-        <div className="picture-modal bg-[var(--bg-secondary)] w-320 h-200 rounded-2xl">
-          <div className="flex justify-center items-center relative">
-            <img
-              className="object-contain w-320 h-200 rounded-tl-2xl rounded-bl-2xl -translate-x-1/4"
-              src={pictures[index]}
-              alt=""
-            />
-          <button
-            onClick={prevPhoto}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-          >
-            <IoIosArrowBack className="text-2xl" />
-          </button>
-          <button
-            onClick={nextPhoto}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-          >
-            <IoIosArrowBack className="rotate-180 text-2xl" />
-          </button>
+          <div className="picture-modal flex justify-between w-320 h-240">
+            <div className="flex justify-center items-center relative select-none">
+              {pictures[index].includes("image") ||
+              pictures[index].includes("gif") ? (
+                <img
+                  className="w-full h-full aspect-auto rounded-tl-2xl rounded-bl-2xl"
+                  src={pictures[index]}
+                  alt={`Post picture`}
+                  loading="lazy"
+                />
+              ) : (
+                <video
+                  controls
+                  className="w-full h-full aspect-video rounded-tl-xl rounded-tb-xl"
+                  src={pictures[index]}
+                  alt={`Post picture`}
+                  loading="lazy"
+                />
+              )}
+              {pictures.lenght > 1 && (
+                <>
+                  <button
+                    onClick={prevPhoto}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                  >
+                    <IoIosArrowBack className="text-2xl" />
+                  </button>
+                  <button
+                    onClick={nextPhoto}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                  >
+                    <IoIosArrowBack className="rotate-180 text-2xl" />
+                  </button>
+                </>
+              )}
+            </div>
+            <div className="w-max h-full flex flex-col bg-[var(--bg-primary)] rounded-tr-2xl  rounded-br-2xl">
+              <div className="flex justify-start items-center gap-1.5">
+                <div className="rounded-full w-12.5 h-12.5 animate-pulse bg-[var(--bg-secondary)]"></div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
     </>,
     document.body
   );

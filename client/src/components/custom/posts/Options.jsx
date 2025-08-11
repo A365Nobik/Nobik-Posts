@@ -1,32 +1,28 @@
 import { useEffect, useState } from "react";
 import { SlOptions } from "react-icons/sl";
-import { IoIosCopy } from "react-icons/io";
-import { IoBookmarks } from "react-icons/io5";
-import { MdReport, MdEdit, MdDelete } from "react-icons/md";
+import { cloneElement } from "react";
 
-export default function Options({ isAuthor, deletePost }) {
+export default function Options({ children }) {
   const [open, setOpen] = useState(false);
-  const [scale, setScale] = useState(0);
-  const liClass =
-    "flex justify-start items-center w-full px-1 py-0  rounded-md hover:bg-[var(--bg-secondary)]";
+  const [scale, setScale] = useState(false);
 
   const handleClick = () => {
     if (open) {
-      setScale(0);
+      setScale(false);
       setTimeout(() => {
         setOpen(false);
       }, 300);
     } else {
       setOpen(true);
       setTimeout(() => {
-        setScale(100);
+        setScale(true);
       }, 10);
     }
   };
 
   const handleOptionClose = (event) => {
     if (!event.target.closest(".options")) {
-      setScale(0);
+      setScale(false);
       setTimeout(() => {
         setOpen(false);
       }, 300);
@@ -35,7 +31,7 @@ export default function Options({ isAuthor, deletePost }) {
 
   const handleOptionCloseKey = (event) => {
     if (event.key === "Escape") {
-      setScale(0);
+      setScale(false);
       setTimeout(() => {
         setOpen(false);
       }, 300);
@@ -54,44 +50,19 @@ export default function Options({ isAuthor, deletePost }) {
   });
 
   return (
-    <div className="options flex flex-col justify-center items-start ">
+    <div className="options flex flex-col justify-center items-start">
       <SlOptions
         onClick={handleClick}
-        className="text-2xl p-1 rounded-full transition-colors hover:bg-[var(--bg-primary)]"
+        className="text-3xl p-1 rounded-full transition-colors hover:bg-[var(--bg-primary)]"
       />
       {open && (
-        <ul
-          className={`flex flex-col justify-start items-start bg-[var(--bg-primary)] p-1 border-2 rounded-md text-lg font-semibold gap-0.5  transition-all ease-in-out duration-300 ${
-            scale ? "scale-100 opacity-100" : "scale-95 opacity-0"
-          }`}
+        <div
+          className={``}
         >
-          <li className={liClass}>
-            <IoIosCopy />
-            <p>Copy link</p>
-          </li>
-          <li className={liClass}>
-            <IoBookmarks />
-            <p>Add to favorites</p>
-          </li>
-          {!isAuthor ? (
-            <li className={liClass}>
-              <MdReport />
-              <p>Report</p>
-            </li>
-          ) : (
-            <>
-              <hr className="w-full" />
-              <li className={liClass}>
-                <MdEdit />
-                <p>Edit</p>
-              </li>
-              <li onClick={deletePost} className={liClass}>
-                <MdDelete />
-                <p>Delete</p>
-              </li>
-            </>
-          )}
-        </ul>
+          {cloneElement(children,{
+            scale:scale
+          })}
+        </div>
       )}
     </div>
   );

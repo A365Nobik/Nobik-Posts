@@ -1,4 +1,4 @@
-import MyButton from "../components/custom/MyButton";
+import {MyButton} from "../components/custom/";
 
 export default function Greeting() {
   return (

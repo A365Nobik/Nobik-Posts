@@ -1,6 +1,17 @@
-import MainPosts from "./MainPosts";
-import Post from "./Post";
+import PostsComponent from "./PostsComponent";
+import Post from "./post/Post";
+import LoadingPosts from "./loading/LoadingPosts";
+import PostThumbnails from "./post/PostThumbnais";
 import CreatePost from "./CreatePost";
-import initialPost from "./initialaPosts.json";
+import CreatePostLoading from "./loading/CreatePostLoading";
+import initialPost from "./initialPosts.json";
 
-export { MainPosts, Post, CreatePost, initialPost };
+export {
+  PostsComponent,
+  Post,
+  LoadingPosts,
+  PostThumbnails,
+  CreatePost,
+  CreatePostLoading,
+  initialPost,
+};

@@ -1,7 +1,7 @@
 import axios from "axios";
-import Button from "../../components/custom/MyButton";
-import CodeForm from "../../components/forms/CodeForm";
-import AfterForm from "../../components/forms/AfterForm";
+import {MyButton} from "../../custom/";
+import CodeForm from "../../forms/CodeForm";
+import AfterForm from "../../forms/AfterForm";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 import { createPortal } from "react-dom";
@@ -29,7 +29,7 @@ console.log(passResetUser.email);
       });
       localStorage.removeItem("passResetUser");
       localStorage.setItem(
-        "primaryUserPassoword",
+        "primaryUserPassword",
         JSON.stringify(request.data[0])
       );
       location.href = "/password-reset";
@@ -76,7 +76,7 @@ console.log(passResetUser.email);
         className={`inset-0 fixed flex justify-center items-center bg-black/80  transition-all ease-in-out duration-300 ${scale?"scale-100 opacity-100":"scale-95 opacity-0"}`}
       >
         <CodeForm {...formProps}>
-          <Button {...btnProps}>{verifying ? "" : "Verify Reset"}</Button>
+          <MyButton {...btnProps}>{verifying ? "" : "Verify Reset"}</MyButton>
           <AfterForm
             question={"Don't want to reset?"}
             hyperLink={"Get back to sign-in"}

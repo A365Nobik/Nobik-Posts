@@ -1,7 +1,7 @@
 import axios from "axios";
-import { MyButton } from "../custom/";
-import CodeForm from "../forms/CodeForm.jsx";
-import AfterForm from "../forms/AfterForm.jsx";
+import { MyButton } from "../../custom/index.js";
+import CodeForm from "../../forms/CodeForm.jsx";
+import AfterForm from "../../forms/AfterForm.jsx";
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 

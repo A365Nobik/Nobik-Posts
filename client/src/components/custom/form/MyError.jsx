@@ -3,7 +3,7 @@ export default function MyError({ anyError ,setAnyError}) {
   return (
     <>
       {anyError ? (
-        <div className="border-2 w-max bg-red-500 p-2 rounded-md">
+        <div className="border-2 w-max bg-red-500 p-2 rounded-md error">
           <span onClick={()=>setAnyError('')} className="flex justify-end float-end">
             <IoMdCloseCircle className="text-2xl"/>
           </span>

@@ -9,10 +9,6 @@ input[type="number"]::-webkit-inner-spin-button {
 
 @theme {
   --font-poppins: "Poppins", sans-serif;
-  --color-dark-primary: #1a1c1f;
-  --color-dark-secondary: #2a2d32;
-  --color-light-primary: #e0e5ec;
-  --color-light-secondary: #f0f6fc;
 }
 
 body.dark {
@@ -20,7 +16,7 @@ body.dark {
   --bg-secondary: #2a2d32;
   --text-primary: #f0f6fc;
   /* --text-primary: #5eff00; */
-  --text-secondary: #ebeceed7;
+  --text-secondary: #ebeceeb6;
   --border-color: var(--text-primary);
 }
 body.light {

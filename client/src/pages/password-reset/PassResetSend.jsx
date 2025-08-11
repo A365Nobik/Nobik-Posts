@@ -1,13 +1,12 @@
 import BasicForm from "../../components/forms/BasicForm";
 import { useState, useEffect } from "react";
-import Button from "../../components/custom/MyButton";
 import axios from "axios";
-import MyInput from "../../components/custom/MyInput";
-import ModalPassResetVerify from "../../components/modal/PassResetVerify";
+import { PassResetVerify } from "../../components/modal";
+import { MyButton, MyInput } from "../../components/custom";
 
 export default function PasswordResetSend() {
   const [email, setEmail] = useState(null);
-  const [emailDirty, setEmailnDirty] = useState(false);
+  const [emailDirty, setEmailDirty] = useState(false);
   const [emailError, setEmailError] = useState("Email should to be filled");
   const [reqError, setReqError] = useState("");
   const [formValid, setFormValid] = useState(false);
@@ -33,7 +32,7 @@ export default function PasswordResetSend() {
   const blurHandler = (event) => {
     switch (event.target.name) {
       case "email": {
-        setEmailnDirty(true);
+        setEmailDirty(true);
         break;
       }
     }
@@ -99,10 +98,10 @@ export default function PasswordResetSend() {
           dirty={emailDirty}
           error={emailError}
         />
-        <Button {...btnProps}>{sending ? "" : "Reset password"}</Button>
+        <MyButton {...btnProps}>{sending ? "" : "Reset password"}</MyButton>
       </BasicForm>
       {isModalOpen ? (
-        <ModalPassResetVerify scale={modalScale} setScale={setModalScale} />
+        <PassResetVerify scale={modalScale} setScale={setModalScale} />
       ) : (
         ""
       )}

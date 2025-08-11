@@ -1,4 +1,4 @@
-import Button from "../components/custom/MyButton";
+import {MyButton} from "../components/custom";
 
 export default function NotFound() {
   return (
@@ -9,9 +9,9 @@ export default function NotFound() {
           <p className="text-4xl text-[var(--text-primary)] font-bold">
             Page Not Found!{" "}
           </p>
-          <Button formValid={true}>
+          <MyButton formValid={true}>
             <a href="/">Home Page</a>
-          </Button>
+          </MyButton>
         </div>
       </div>
     </>

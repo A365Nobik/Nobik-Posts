@@ -4,6 +4,7 @@ import BasicForm from "../../components/forms/BasicForm";
 import AfterForm from "../../components/forms/AfterForm";
 import { MyInput, MyButton, MyError } from "../../components/custom/";
 import { EmailVerify } from "../../components/modal";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Register() {
   const [login, setLogin] = useState(null);
@@ -24,7 +25,8 @@ export default function Register() {
   const [registering, setRegistering] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   const apiUrl = import.meta.env.VITE_API_URL;
-
+  const siteKey = import.meta.env.VITE_RECAPCHA_CLIENT_KEY;
+  const [captcha, setCaptcha] = useState(null);
   const loginHandler = (event) => {
     setLogin(event.target.value);
     if (event.target.value.length > 0) {
@@ -156,10 +158,11 @@ export default function Register() {
           label={"Password"}
           onChange={passwordHandler}
           onBlur={blurHandler}
-          type={"password"}
+          type={"new-password"}
           dirty={passwordDirty}
           error={passwordError}
         />
+        <ReCAPTCHA onChange={(token)=>setCaptcha(token)} sitekey={siteKey}/>
         <MyButton {...btnProps}>{registering ? "" : "Register"} </MyButton>
         <AfterForm {...afProps} />
       </BasicForm>

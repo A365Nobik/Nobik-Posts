@@ -86,9 +86,13 @@ class UserClassService {
     if (!checkCode) {
       throw new Error(`The code is not correct!`);
     }
+    const payload = {
+      id:uuidv4(),
+      
+    }
     const activateUser = await db.query(
-      "INSERT INTO users(email,login,password) VALUES($1,$2,$3) RETURNING *",
-      [email, primaryUser.login, primaryUser.hashPassword]
+      "INSERT INTO users(id,email,login,password) VALUES($1,$2,$3,$4) RETURNING *",
+      [payload.id,email, primaryUser.login, primaryUser.hashPassword]
     );
     this.primaryUsers.delete(email);
     return activateUser.rows.map(({ password, ...user }) => user);

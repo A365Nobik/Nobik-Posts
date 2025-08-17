@@ -163,7 +163,7 @@ export default function Register() {
           dirty={passwordDirty}
           error={passwordError}
         />
-        <ReCAPTCHA onChange={(token)=>setCaptcha(token)} sitekey={siteKey}/>
+        <ReCAPTCHA  onChange={(token)=>setCaptcha(token)} sitekey={siteKey}/>
         <MyButton {...btnProps}>{registering ? "" : "Register"} </MyButton>
         <AfterForm {...afProps} />
       </BasicForm>

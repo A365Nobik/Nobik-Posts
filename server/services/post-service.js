@@ -1,6 +1,6 @@
 import db from "../db/db.js";
 import { v4 as uuidv4 } from "uuid";
-import { supabase } from "../supabase/client.js";
+import { supabase } from "../index.js";
 
 class PostServiceClass {
   bucket = "posts-thumbnails";
@@ -42,7 +42,6 @@ ORDER BY posts.created_at DESC;`);
         } = supabase.storage.from("posts-thumbnails").getPublicUrl(name);
         return publicUrl;
       } catch (error) {
-        console.log(error);
         throw error;
       }
     });
@@ -74,7 +73,7 @@ ORDER BY posts.created_at DESC;`);
           throw new Error(error);
         }
       } catch (error) {
-        console.log(error.message);
+        throw new Error(error)
       }
     }
     const deletedPost = await db.query("DELETE FROM posts WHERE id=$1", [id]);

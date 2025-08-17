@@ -25,6 +25,7 @@ export default function Register() {
   const [registering, setRegistering] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   const apiUrl = import.meta.env.VITE_API_URL;
+  const siteKey=import.meta.env.VITE_RECAPTCHA_SITE_KEY
   const [captcha, setCaptcha] = useState(null);
   const loginHandler = (event) => {
     setLogin(event.target.value);
@@ -76,12 +77,12 @@ export default function Register() {
     }
   };
   useEffect(() => {
-    if (loginError || emailError || passwordError) {
+    if (loginError || emailError || passwordError||!captcha) {
       setFormValid(false);
     } else {
       setFormValid(true);
     }
-  }, [loginError, emailError, passwordError]);
+  }, [loginError, emailError, passwordError,captcha]);
 
   useEffect(() => {
     if (user) {
@@ -103,6 +104,7 @@ export default function Register() {
         password: password,
       });
       console.log(request.data);
+
       localStorage.setItem("primaryUser", JSON.stringify(request.data));
       setEmailModal(true);
       setModalScale(0);
@@ -161,7 +163,7 @@ export default function Register() {
           dirty={passwordDirty}
           error={passwordError}
         />
-        <ReCAPTCHA onChange={(token)=>setCaptcha(token)} sitekey={import.meta.env.VITE_RECAPTCHA_CLIENT_KEY}/>
+        <ReCAPTCHA onChange={(token)=>setCaptcha(token)} sitekey={siteKey}/>
         <MyButton {...btnProps}>{registering ? "" : "Register"} </MyButton>
         <AfterForm {...afProps} />
       </BasicForm>

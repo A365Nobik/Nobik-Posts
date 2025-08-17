@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { MailService } from "../services/mail-service.js";
 // import { TokenService } from "./token-service.js";
+import jwt from "jsonwebtoken"
 
 class UserClassService {
   primaryUsers = new Map();
@@ -35,6 +36,7 @@ class UserClassService {
       hashPassword,
       hashCode,
     });
+    console.log(activateCode)
     MailService.sendActivationLink(email, null, activateCode);
     return {
       email,
@@ -82,20 +84,25 @@ class UserClassService {
         `The user with the email address ${email} is not found!Please register again.`
       );
     }
+    
     const checkCode = bcrypt.compareSync(code, primaryUser.hashCode);
     if (!checkCode) {
       throw new Error(`The code is not correct!`);
     }
     const payload = {
-      id:uuidv4(),
+      id:uuidv4()
       
     }
+
     const activateUser = await db.query(
       "INSERT INTO users(id,email,login,password) VALUES($1,$2,$3,$4) RETURNING *",
       [payload.id,email, primaryUser.login, primaryUser.hashPassword]
     );
+    const token =jwt.sign(payload,process.env.JWT_ACCESS_SECRET,{"expiresIn":"15m"})
     this.primaryUsers.delete(email);
-    return activateUser.rows.map(({ password, ...user }) => user);
+    console.log(token)
+    return token
+    // return activateUser.rows.map(({ password, ...user }) => user);
   }
   async sendPassResetCode(email) {
     const candidate = await db.query("SELECT * FROM users WHERE email=$1", [

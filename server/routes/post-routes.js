@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { PostController } from "../controllers/post-controller.js";
 import multer from "multer";
-
 const router = new Router();
 const storage = multer.memoryStorage();
 

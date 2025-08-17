@@ -1,9 +1,10 @@
-import { FaPlay } from "react-icons/fa";
+import { FaPlay, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
 
 export default function Audio({ audio }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const name = audio.name.split(".")[0];
   const [audioLength, setAudioLength] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -49,7 +50,7 @@ export default function Audio({ audio }) {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center bg-[var(--bg-secondary)] rounded-lg w-120 h-75 relative">
+    <div className="relative w-120 h-auto flex flex-col justify-center items-center bg-[var(--bg-secondary)] rounded-lg ">
       <audio
         autoPlay={isPlaying}
         ref={audioRef}
@@ -57,7 +58,7 @@ export default function Audio({ audio }) {
         src={URL.createObjectURL(audio)}
         className="w-full h-full object-contain rounded"
       />
-      <div className=" rotate-270 absolute left-0 -translate-x-1/4 top-1/2 -translate-y-1/2 ">
+      <div className="absolute left-0 -translate-x-1/4 top-1/2 -translate-y-1/2 rotate-270">
         <input
           onChange={(event) => volumeChange(event)}
           type="range"
@@ -65,10 +66,15 @@ export default function Audio({ audio }) {
           max={1}
           step={0.01}
         />
+        <button className="rotate-90">
+          {!isMuted ? <FaVolumeUp /> : <FaVolumeMute />}
+        </button>
       </div>
       <div className="flex justify-center items-center  rounded-full bg-[var(--bg-primary)] w-50 h-50 relative ">
         <div className="flex justify-center items-center rounded-full bg-[var(--bg-secondary)] w-25 h-25 absolute top-1/2 -translate-y-1/2  transition-transform duration-600">
-          <p className="text-sm  absolute top-1/2 -translate-y-1/2">{name}</p>
+          <p className="text-sm  absolute top-1/2 -translate-y-1/2 text-center">
+            {name}
+          </p>
         </div>
       </div>
       <h1>{name}</h1>

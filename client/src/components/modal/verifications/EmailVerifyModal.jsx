@@ -51,9 +51,9 @@ export default function EmailVerify({ scale, setScale }) {
         email: primaryUser.email,
         code: userCode,
       });
-      console.log(request.data[0]);
+      console.log(request.data);
       localStorage.removeItem("primaryUser");
-      localStorage.setItem("user", JSON.stringify(request.data[0]));
+      // localStorage.setItem("user", JSON.stringify(request.data[0]));
       setScale(0);
       location.href = "/";
     } catch (error) {

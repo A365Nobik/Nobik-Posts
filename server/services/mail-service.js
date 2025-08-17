@@ -1,16 +1,14 @@
 import nodemailer from "nodemailer";
 
-const auth = {
-  user: "nobik.posts@gmail.com",
-  pass: "balx ofip ryma iydz",
-};
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   secure: false,
-  auth: auth,
+  auth: {
+    user: "nobik.posts@gmail.com",
+    pass: "balx ofip ryma iydz",
+  },
 });
-console.log(process.env.SMTP_PASSWORD)
 class MailClassSevice {
   async sendActivationLink(to, link, activateCode) {
     try {

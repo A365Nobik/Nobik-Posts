@@ -5,6 +5,9 @@ class UserClassController {
   async register(req, res) {
     try {
       const { login, email, password } = req.body;
+      if(!login,!email,!password){
+        return res.status(400).json("Please fill al fields!")
+      }
       const userData = await UserService.register(login, email, password);
       res.status(200).json(userData);
     } catch (error) {

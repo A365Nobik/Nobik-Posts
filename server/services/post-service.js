@@ -49,7 +49,7 @@ ORDER BY posts.created_at DESC;`);
     const filesUrl = await Promise.all(uploadedPromise);
     const newPost = await db.query(
       "INSERT INTO posts (id,content,thumbnails,author_id) values($1,$2,$3,$4) RETURNING *",
-      [postId, !content?" ":content, filesUrl, author_id]
+      [postId, !content ? " " : content, filesUrl, author_id]
     );
     return newPost.rows[0];
   }
